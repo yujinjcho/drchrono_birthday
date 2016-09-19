@@ -46,3 +46,15 @@
     width: 100%;
     border: 1px solid black;
 }
+
+/*LOGIN*/
+.login-container{
+    margin-top: 150px;
+    text-align: center;
+}
+
+.login {
+    margin: 0 auto;
+    margin-top: 20px;
+    width: 150px;
+}

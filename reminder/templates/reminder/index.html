@@ -1,1 +1,20 @@
-<p>This will be the login page</p>
+{% load static %}
+<html>
+<head>
+  <title>Birthday Reminder</title>
+  <link rel="stylesheet" type"text/css" href="{% static 'reminder/css/bootstrap.css' %}" />
+  <link rel="stylesheet" type"text/css" href="{% static 'reminder/css/stylesheet.css' %}" />
+</head>
+<body>
+
+  <div class="login-container">
+    <h1>Login into your drchrono birthday reminder</h1>
+
+    <input class="btn btn-default btn-lg login" type="button" onclick="location.href='{{ DRCHRONO_REDIRECT }}';" value="Login" />
+  </div>
+
+</body>
+</html>
+
+
+
