@@ -1,0 +1,48 @@
+#main-container {
+    margin-top: 20px;
+}
+
+
+.button-container {
+    text-align: center;
+    margin-bottom: 10px;    
+}
+
+.button-container .btn-default {
+    width: 120px;
+}
+
+/*PATIENTS*/
+
+.patient-container {
+    background: rgba(200,200,200,.3);
+    padding-right: 15px;
+    padding-left: 15px;
+    display: inline-block;
+}
+
+.profile-pic-container {
+    display: inline-block;
+    text-align: center;
+}
+
+.profile-pic {
+    height: 110px;
+    max-width: 100%;
+    display: inline-block;
+}
+
+.patient-info {
+    vertical-align: top;
+    display: inline-block;
+}
+
+.patient-profile {
+    display: inline-block;
+    width: 100%;
+}
+
+.patient-communication {
+    width: 100%;
+    border: 1px solid black;
+}
