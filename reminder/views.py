@@ -55,11 +55,16 @@ def birthdays(request, access):
         }
     )
 
+@login_required
 def create_message(request):
-    #data = json.dumps({'success':'True'})
-    #return JsonResponse(data, safe=False)
-    new_message = Message()
-    return HttpResponse('Successful')
+    current_user = request.user
+    new_message = Message(
+        user=current_user,
+        patient_id = request.POST.get('patient_id'),
+        creation_date = datetime.now()
+    )
+    new_message.save()
+    return HttpResponse("Created Successfully")
 
 
 #Helper functions

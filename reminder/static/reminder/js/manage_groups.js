@@ -7,15 +7,12 @@
     var arrayLength = patient_data.length;
     for (var i = 0; i < arrayLength; i++) {
       var greetBtnElem = document.getElementById('greet-'.concat(patient_data[i].id));
-      greetBtnElem.addEventListener("click", toggleCheckMark)
+      greetBtnElem.addEventListener("click", createMessage)
     };
   }; 
 
-  function toggleCheckMark(e) {
-      var patient_id = e.currentTarget.id.substr(6);
+  function toggleCheckMark(patient_id) {
       var children = document.getElementById(patient_id).childNodes;
-
-      createMessage(patient_id, '12345432')
 
       for (var i = 0; i < children.length; i++) {
           if (children[i].tagName == "SPAN") {
@@ -30,7 +27,9 @@
       };
   };
 
-  function createMessage(id, user_id) {
+  function createMessage(e) {
+
+    var id = e.currentTarget.id.substr(6);
     
     $(function () {
         function getCookie(name) {
@@ -53,10 +52,9 @@
           "http://127.0.0.1:8000/create_message",
           {
             "patient_id":id,
-            "user_id":user_id,
             'csrfmiddlewaretoken': csrftoken
           },
-          window.alert("Message saved!")
+          toggleCheckMark(id)
         );
 
     });
