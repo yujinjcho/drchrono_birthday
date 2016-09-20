@@ -117,12 +117,31 @@
 
   <script type="text/javascript"></script>
   <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
-  <script src="{% static 'reminder/js/bootstrap.js' %}"></script>
   <script type="text/javascript">
     var patient_data = {{ patient_data_json|safe }};
 
     var activeProfile = document.getElementById('profile-'.concat({{ upcoming.0.id }}));
     activeProfile.className = "patient-profile";
+
+    function showProfile(e){
+      hideProfiles();
+      var arrayLength = patient_data.length;
+      for (var i = 0; i < arrayLength; i++) {
+          if (patient_data[i].id == e ) {
+            
+            var activeProfile = document.getElementById('profile-'.concat(patient_data[i].id));
+            activeProfile.className = "patient-profile";
+          };
+      };
+    };
+
+    function hideProfiles(){
+      var profiles = document.getElementsByClassName("patient-profile");
+      var arrayLength = profiles.length;
+      for (var i = 0; i < arrayLength; i++) {
+          profiles[i].className = "patient-profile profile-hidden";
+      };
+    };
   </script>
   
   

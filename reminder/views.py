@@ -2,6 +2,10 @@ from datetime import datetime
 import json
 
 from django.shortcuts import render, redirect
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import login
+
 from . import drchrono_config
 
 import requests
@@ -28,8 +32,30 @@ def auth_redirect(request):
     response.raise_for_status()
     data = response.json()
     access_token = data['access_token']
+    handle_user(request, access_token)
     return redirect('reminder:birthdays', access=access_token)
     
+def handle_user(request, access_token):
+    username = get_username(access_token)
+    user_query = User.objects.filter(username=username)
+
+    if not user_query:
+        user = User.objects.create_user(username)
+    else:
+        user = user_query[0]
+
+    user.save()
+    login(request, user)
+
+def get_username(access_token):
+    response = requests.get('https://drchrono.com/api/users/current', headers={
+        'Authorization': 'Bearer %s' % access_token,
+    })
+    response.raise_for_status()
+    data = response.json()
+    return data['username']
+
+@login_required
 def birthdays(request, access):
     data = get_patient_data(access)
     recently_passed, upcoming = group_patients(data)
@@ -64,14 +90,12 @@ def get_patient_data(access_token):
         patients.extend(data['results'])
         patients_url = data['next'] # A JSON null on the last page
 
-    #return group_patients(patients)
     return patients
 
 def group_patients(patient_data):
     
     # THINK ABOUT HOW ELSE TO ORGANIZE THIS
     patient_data = [patient for patient in patient_data if patient["date_of_birth"]]
-    # THINK ABOUT HOW ELSE TO ORGANIZE THIS
 
     date_now = datetime.now()
     current_date = datetime(date_now.year, date_now.month, date_now.day)
