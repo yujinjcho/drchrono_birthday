@@ -33,6 +33,7 @@
               In {{ patient.days_to_bday }} day{{ patient.days_to_bday|pluralize}}
             {% endif %}
           </p>
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
         </a>
         {% endfor %}
       </div>
@@ -45,6 +46,7 @@
           <p class="list-group-item-text">
               {{ patient.days_since_bday|stringformat:"+d"|slice:"1:" }} day{{ patient.days_since_bday|pluralize}} ago
           </p>
+          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
         </a>
         {% endfor %}
       </div>
@@ -98,9 +100,11 @@
             {{ current_patient.email }}
           {% endif %}
         </div>
-      </div>
-      {% endfor %}
 
+        <button type="button" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12" onclick="toggleCheckMark({{ current_patient.id }})">Sent Greetings</button>
+      </div>
+
+      {% endfor %}
 
       <!--
       ADD COMMUNICATION FUNCTIONALITY
@@ -142,6 +146,22 @@
           profiles[i].className = "patient-profile profile-hidden";
       };
     };
+
+    function toggleCheckMark(id) {
+        var children = document.getElementById(id).childNodes;
+
+        for (var i = 0; i < children.length; i++) {
+            if (children[i].tagName == "SPAN") {
+                var checkSign = children[i];
+                if (checkSign.className.includes('msg-sent')) {
+                    return
+                }
+                else {
+                    checkSign.className = checkSign.className.concat(' msg-sent')
+                }
+            }
+        }
+    }
   </script>
   
   

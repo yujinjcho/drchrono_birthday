@@ -38,25 +38,9 @@
     };
   };
 
-  function hideProfiles(){
-    var profiles = document.getElementsByClassName("patient-profile");
-    var arrayLength = profiles.length;
-    for (var i = 0; i < arrayLength; i++) {
-        profiles[i].className = "patient-profile profile-hidden";
-    };
-  };
+  
 
-  function showProfile(e){
-    hideProfiles();
-    var arrayLength = patient_data.length;
-    for (var i = 0; i < arrayLength; i++) {
-        if (patient_data[i].id == e ) {
-          
-          var activeProfile = document.getElementById('profile-'.concat(patient_data[i].id));
-          activeProfile.className = "patient-profile";
-        };
-    };
-  };
+  
 
 })();
 

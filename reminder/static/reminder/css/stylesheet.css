@@ -12,17 +12,24 @@
     width: 120px;
 }
 
-/*
-.patient-list .col-xs-12 {
-    max-height: 300px;
-    overflow-y: scroll;
-}
-*/
  @media (max-width: 767px) {
     .patient-list {
         max-height: 300px;
         overflow-y: scroll;       
     }
+ }
+
+ .glyphicon-ok {
+    color: green;
+    position: absolute;
+    right: 30px;
+    top: 20px;
+    font-size: 1.5em;
+    display: none;
+ }
+
+ .glyphicon-ok.msg-sent {
+    display: block;
  }
 
 /*PATIENTS*/
@@ -70,6 +77,10 @@
     display: none;
 }
 
+.greetings-btn {
+    margin-top: 15px;    
+}
+
 
 /*LOGIN*/
 .login-container{
@@ -82,3 +93,5 @@
     margin-top: 20px;
     width: 150px;
 }
+
+

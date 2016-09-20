@@ -1,15 +1,13 @@
-from datetime import datetime
 import json
+import requests
+from datetime import datetime
 
 from django.shortcuts import render, redirect
+from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import login
 
 from . import drchrono_config
-
-import requests
-
 
 # Create your views here.
 def index(request):
@@ -48,9 +46,12 @@ def handle_user(request, access_token):
     login(request, user)
 
 def get_username(access_token):
-    response = requests.get('https://drchrono.com/api/users/current', headers={
-        'Authorization': 'Bearer %s' % access_token,
-    })
+    response = requests.get(
+        'https://drchrono.com/api/users/current', 
+        headers={
+            'Authorization': 'Bearer %s' % access_token,
+        }
+    )
     response.raise_for_status()
     data = response.json()
     return data['username']
@@ -64,7 +65,6 @@ def birthdays(request, access):
         current_patient = upcoming[0]
     else:
         current_patient = None
-
     return render(
         request, 
         'reminder/birthdays.html', 
@@ -75,7 +75,6 @@ def birthdays(request, access):
             'patient_data_json': json.dumps(recently_passed + upcoming)
         }
     )
-
 
 #Helper functions
 def get_patient_data(access_token):
@@ -94,8 +93,11 @@ def get_patient_data(access_token):
 
 def group_patients(patient_data):
     
-    # THINK ABOUT HOW ELSE TO ORGANIZE THIS
-    patient_data = [patient for patient in patient_data if patient["date_of_birth"]]
+    # Currently excluding patients without dob data
+    patient_data = [
+        patient for patient in patient_data 
+        if patient["date_of_birth"]
+    ]
 
     date_now = datetime.now()
     current_date = datetime(date_now.year, date_now.month, date_now.day)
@@ -103,7 +105,7 @@ def group_patients(patient_data):
     recently_passed = []
     upcoming_birthdays = []
 
-    #Determine appropriate date range for belated birthday greetings
+    #Determine appropriate date range for birthday greetings
     PAST_BDAY_RANGE = -14
     FUTURE_BDAY_RANGE = 340
 
@@ -114,7 +116,7 @@ def group_patients(patient_data):
         bday_this_year = datetime(current_date.year, bday.month, bday.day)
         days_diff = bday_this_year - current_date
 
-        # add datetime object for sorting purposes later
+        # add days diff for sorting and display purposes
         if days_diff.days < 0 and days_diff.days >= PAST_BDAY_RANGE:
             patient['days_since_bday'] = days_diff.days
             recently_passed.append(patient)
@@ -128,7 +130,7 @@ def group_patients(patient_data):
                 days_to_bday = bday_next_year - current_date
                 patient['days_to_bday'] = days_to_bday.days
 
-            # only include if birthday is coming up in [2] months
+            # only include if birthday is coming up in FUTURE_RANGE days
             if patient['days_to_bday'] <= FUTURE_BDAY_RANGE:
                 upcoming_birthdays.append(patient)
 
