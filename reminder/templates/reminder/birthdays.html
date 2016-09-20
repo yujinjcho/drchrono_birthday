@@ -7,10 +7,12 @@
 </head>
 <body>
 
+  
+
   <div id="main-container">
 
     
-    <div class="patient-list col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-5 hidden-xs">      
+    <div class="patient-list col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-5 col-xs-12">      
       <div class='button-container'>
         <div class="btn-group" role="group" aria-label="past-or-upcoming">
           <button type="button" id="upcoming-btn" class="btn btn-default active">Upcoming</button>
@@ -121,6 +123,7 @@
   </div>
 
   <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
+  <script src="{% static 'reminder/js/bootstrap.js' %}"></script>
   <script type="text/javascript">
     var patient_data = {{ patient_data_json|safe }};
 
