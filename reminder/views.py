@@ -2,12 +2,14 @@ import json
 import requests
 from datetime import datetime
 
-from django.shortcuts import render, redirect
+from django.http import JsonResponse, HttpResponse
+from django.shortcuts import render, redirect, render_to_response
 from django.contrib.auth import login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
 from . import drchrono_config
+from .models import Message
 
 # Create your views here.
 def index(request):
@@ -33,29 +35,6 @@ def auth_redirect(request):
     handle_user(request, access_token)
     return redirect('reminder:birthdays', access=access_token)
     
-def handle_user(request, access_token):
-    username = get_username(access_token)
-    user_query = User.objects.filter(username=username)
-
-    if not user_query:
-        user = User.objects.create_user(username)
-    else:
-        user = user_query[0]
-
-    user.save()
-    login(request, user)
-
-def get_username(access_token):
-    response = requests.get(
-        'https://drchrono.com/api/users/current', 
-        headers={
-            'Authorization': 'Bearer %s' % access_token,
-        }
-    )
-    response.raise_for_status()
-    data = response.json()
-    return data['username']
-
 @login_required
 def birthdays(request, access):
     data = get_patient_data(access)
@@ -76,7 +55,37 @@ def birthdays(request, access):
         }
     )
 
+def create_message(request):
+    #data = json.dumps({'success':'True'})
+    #return JsonResponse(data, safe=False)
+    new_message = Message()
+    return HttpResponse('Successful')
+
+
 #Helper functions
+def get_user_data(access_token):
+    response = requests.get(
+        'https://drchrono.com/api/users/current', 
+        headers={
+            'Authorization': 'Bearer %s' % access_token,
+        }
+    )
+    response.raise_for_status()
+    data = response.json()
+    return data
+
+def handle_user(request, access_token):
+    user_data = get_user_data(access_token)
+    user_query = User.objects.filter(username=user_data['id'])
+
+    if not user_query:
+        user = User.objects.create_user(username=str(user_data['id']))
+        user.save()
+    else:
+        user = user_query[0]
+    
+    login(request, user)
+
 def get_patient_data(access_token):
     headers = {
         'Authorization': 'Bearer %s' % access_token,

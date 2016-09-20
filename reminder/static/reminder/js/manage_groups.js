@@ -8,11 +8,14 @@
     for (var i = 0; i < arrayLength; i++) {
       var greetBtnElem = document.getElementById('greet-'.concat(patient_data[i].id));
       greetBtnElem.addEventListener("click", toggleCheckMark)
-    }
-  }  
+    };
+  }; 
 
   function toggleCheckMark(e) {
-      var children = document.getElementById(e.currentTarget.id.substr(6)).childNodes;
+      var patient_id = e.currentTarget.id.substr(6);
+      var children = document.getElementById(patient_id).childNodes;
+
+      createMessage(patient_id, '12345432')
 
       for (var i = 0; i < children.length; i++) {
           if (children[i].tagName == "SPAN") {
@@ -23,9 +26,41 @@
               else {
                   checkSign.className = checkSign.className.concat(' msg-sent')
               }
-          }
-      }
-  }
+          };
+      };
+  };
+
+  function createMessage(id, user_id) {
+    
+    $(function () {
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        var csrftoken = getCookie('csrftoken');
+
+        $.post(
+          "http://127.0.0.1:8000/create_message",
+          {
+            "patient_id":id,
+            "user_id":user_id,
+            'csrfmiddlewaretoken': csrftoken
+          },
+          window.alert("Message saved!")
+        );
+
+    });
+  };
 
   function patientListListen(){
     var arrayLength = patient_data.length;
@@ -36,7 +71,7 @@
   }
 
   function showProfile(e){
-      debugger;
+
       hideProfiles();
       var arrayLength = patient_data.length;
       for (var i = 0; i < arrayLength; i++) {
