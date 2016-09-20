@@ -92,3 +92,4 @@ ENV/
 #django project
 db.sqlite3
 reminder/drchrono_config.py
+birthday/settings.py
