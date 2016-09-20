@@ -24,7 +24,12 @@
       <div class="list-group upcoming-group">
         
         {% for patient in upcoming %}
+        <!--
         <a href="#" class="list-group-item" id="{{ patient.id }}" onclick="showProfile({{ patient.id }})">
+        -->
+        <a href="#" class="list-group-item" id="{{ patient.id }}">
+
+
           <h4 class="list-group-item-heading">{{ patient.first_name }} {{ patient.middle_name}} {{ patient.last_name}} </h4>
           <p class="list-group-item-text">
             {% if patient.days_to_bday == 0 %}
@@ -101,7 +106,12 @@
           {% endif %}
         </div>
 
-        <button type="button" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12" onclick="toggleCheckMark({{ current_patient.id }})">Sent Greetings</button>
+        <button type="button" id="greet-{{ current_patient.id }}" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12">Sent Greetings</button>
+
+        <!--
+        <button type="button" id="greet-{{ current_patient.id }}" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12" onclick="toggleCheckMark({{ current_patient.id }})">Sent Greetings</button>
+        -->
+
       </div>
 
       {% endfor %}
@@ -119,50 +129,16 @@
 
   </div>
 
-  <script type="text/javascript"></script>
-  <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
+  
   <script type="text/javascript">
     var patient_data = {{ patient_data_json|safe }};
 
+    /*Set initial profile for viewing to be first on upcoming list*/
     var activeProfile = document.getElementById('profile-'.concat({{ upcoming.0.id }}));
     activeProfile.className = "patient-profile";
-
-    function showProfile(e){
-      hideProfiles();
-      var arrayLength = patient_data.length;
-      for (var i = 0; i < arrayLength; i++) {
-          if (patient_data[i].id == e ) {
-            
-            var activeProfile = document.getElementById('profile-'.concat(patient_data[i].id));
-            activeProfile.className = "patient-profile";
-          };
-      };
-    };
-
-    function hideProfiles(){
-      var profiles = document.getElementsByClassName("patient-profile");
-      var arrayLength = profiles.length;
-      for (var i = 0; i < arrayLength; i++) {
-          profiles[i].className = "patient-profile profile-hidden";
-      };
-    };
-
-    function toggleCheckMark(id) {
-        var children = document.getElementById(id).childNodes;
-
-        for (var i = 0; i < children.length; i++) {
-            if (children[i].tagName == "SPAN") {
-                var checkSign = children[i];
-                if (checkSign.className.includes('msg-sent')) {
-                    return
-                }
-                else {
-                    checkSign.className = checkSign.className.concat(' msg-sent')
-                }
-            }
-        }
-    }
+  
   </script>
+  <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
   
   
 
