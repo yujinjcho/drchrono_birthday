@@ -21,6 +21,10 @@
     display: inline-block;
 }
 
+.hide-group {
+    display: none;  
+}
+
 .profile-pic-container {
     display: inline-block;
     text-align: center;
@@ -46,6 +50,13 @@
     width: 100%;
     border: 1px solid black;
 }
+
+.profile-hidden {
+    display: none;
+}
+
+
+
 
 /*LOGIN*/
 .login-container{

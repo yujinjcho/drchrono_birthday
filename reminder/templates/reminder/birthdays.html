@@ -13,65 +13,100 @@
     <div class="patient-list col-lg-4 col-lg-offset-1 col-md-4 col-md-offset-1 col-sm-5 hidden-xs">      
       <div class='button-container'>
         <div class="btn-group" role="group" aria-label="past-or-upcoming">
-          <button type="button" class="btn btn-default active">Upcoming</button>
-          <button type="button" class="btn btn-default">Past</button>
+          <button type="button" id="upcoming-btn" class="btn btn-default active">Upcoming</button>
+          <button type="button" id="past-btn" class="btn btn-default">Past</button>
         </div>
       </div>
 
 
-      <div class="list-group">
-        <a href="#" class="list-group-item active">
-          <h4 class="list-group-item-heading">John Smith</h4>
-          <p class="list-group-item-text">Birthday is today!</p>
+      <div class="list-group upcoming-group">
+        
+        {% for patient in upcoming %}
+        <a href="#" class="list-group-item" id="{{ patient.id }}" onclick="showProfile({{ patient.id }})">
+          <h4 class="list-group-item-heading">{{ patient.first_name }} {{ patient.middle_name}} {{ patient.last_name}} </h4>
+          <p class="list-group-item-text">
+            {% if patient.days_to_bday == 0 %}
+              Birthday is today!
+            {% else %}
+              In {{ patient.days_to_bday }} day{{ patient.days_to_bday|pluralize}}
+            {% endif %}
+          </p>
         </a>
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">John Smith</h4>
-          <p class="list-group-item-text">Birthday is today!</p>
+        {% endfor %}
+      </div>
+
+      <div class="list-group passed-group hide-group">
+        
+        {% for patient in passed %}
+        <a href="#" class="list-group-item" id="{{ patient.id }}" onclick="showProfile({{ patient.id }})">
+          <h4 class="list-group-item-heading">{{ patient.first_name }} {{ patient.middle_name}} {{ patient.last_name}} </h4>
+          <p class="list-group-item-text">
+              {{ patient.days_since_bday|stringformat:"+d"|slice:"1:" }} day{{ patient.days_since_bday|pluralize}} ago
+          </p>
         </a>
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">John Smith</h4>
-          <p class="list-group-item-text">Birthday is in 1 day</p>
-        </a>
-        <a href="#" class="list-group-item">
-          <h4 class="list-group-item-heading">John Smith</h4>
-          <p class="list-group-item-text">Birthday is in 2 days</p>  
-        </a>
+        {% endfor %}
       </div>
 
     </div>
 
     <div class="patient-container col-lg-6 col-md-6 col-sm-7 col-xs-12">
       
-      <div class='patient-profile'>
-        <h3>Patient Name (XX today)</h3>
+      {% for current_patient in patient_data %}
+      <div class='patient-profile profile-hidden' id="profile-{{ current_patient.id }}">
+        <h3>{{ current_patient.first_name }} {{ current_patient.last_name }}</h3>
         
         <div class="profile-pic-container col-xs-4 col-sm-12 col-md-3">
-          <img src='https://645953a9c2c98894ea6d-615e987a2b08362dcf1e6ff810ff03b3.ssl.cf5.rackcdn.com/CACHE/images/patient_photos/3bd6f9a1-a88c-4008-9229-ff581f4ff871/41df1651059225e28497e7dfc48e5e79.jpg' class='profile-pic'></img>
+          <img src='{{ current_patient.patient_photo }}' class='profile-pic'></img>
         </div>
         <div class="patient-info col-xs-8 col-sm-6 col-md-4">
-          <strong>Sex:</strong> Male
+          <strong>Sex:</strong> {{ current_patient.gender }}
           <br>
-          <strong>DOB:</strong> 9/10/2002
+          <strong>DOB:</strong> {{ current_patient.date_of_birth }}
           <br>
-          <strong>Last Visit:</strong> 3/3/3333
+          <strong>Last Visit:</strong> {{ current_patient.date_of_last_appointment }}
         </div>
 
         <div class="patient-info col-xs-8 col-sm-6 col-md-5">
-          <strong>Home:</strong> 333-333-3333
+          <strong>Home:</strong> 
+          {% if not current_patient.home_phone %}
+            Missing
+          {% else %}
+            {{ current_patient.home_phone }}
+          {% endif %}
+          
           <br>
-          <strong>Office:</strong> 333-333-3333
+          <strong>Office:</strong> 
+          {% if not current_patient.office_phone %}
+            Missing
+          {% else %}
+            {{ current_patient.office_phone }}
+          {% endif %}
           <br>
-          <strong>Cell:</strong> 333-333-3333
+          <strong>Cell:</strong> 
+          {% if not current_patient.cell_phone %}
+            Missing
+          {% else %}
+            {{ current_patient.cell_phone }}
+          {% endif %}
           <br>
-          <strong>Email:</strong> XXX@xxx.com
+          <strong>Email:</strong>
+          {% if not current_patient.email %}
+            Missing
+          {% else %}
+            {{ current_patient.email }}
+          {% endif %}
         </div>
       </div>
+      {% endfor %}
 
-    <p>{{ passed }}</p>
-    <br>
-    <p>{{ upcoming }}</p>
+
+
+    
 
       <!--
+      <p>{{ passed }}</p>
+      <br>
+      <p>{{ upcoming }}</p>
 
       ADD COMMUNICATION FUNCTIONALITY
       <div class="patient-communication">
@@ -84,6 +119,28 @@
     
 
   </div>
+
+  <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
+  <script type="text/javascript">
+    var patient_data = {{ patient_data_json|safe }};
+
+    function showProfile(e){
+      hideProfiles();
+      var arrayLength = patient_data.length;
+      for (var i = 0; i < arrayLength; i++) {
+          if (patient_data[i].id == e ) {
+            
+            var activeProfile = document.getElementById('profile-'.concat(patient_data[i].id));
+            activeProfile.className = "patient-profile";
+          };
+      };
+    };
+
+    var activeProfile = document.getElementById('profile-'.concat({{ upcoming.0.id }}));
+    activeProfile.className = "patient-profile";
+  </script>
+  
+  
 
 </body>
 </html>

@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 
 from django.shortcuts import render, redirect
 from . import drchrono_config
@@ -32,12 +33,20 @@ def auth_redirect(request):
 def birthdays(request, access):
     data = get_patient_data(access)
     recently_passed, upcoming = group_patients(data)
+    
+    if upcoming:
+        current_patient = upcoming[0]
+    else:
+        current_patient = None
+
     return render(
         request, 
         'reminder/birthdays.html', 
         {
             'passed': recently_passed,
-            'upcoming': upcoming
+            'upcoming': upcoming,
+            'patient_data': recently_passed + upcoming,
+            'patient_data_json': json.dumps(recently_passed + upcoming)
         }
     )
 
@@ -72,6 +81,7 @@ def group_patients(patient_data):
 
     #Determine appropriate date range for belated birthday greetings
     PAST_BDAY_RANGE = -14
+    FUTURE_BDAY_RANGE = 60
 
     for patient in patient_data:
         bday = datetime.strptime(
@@ -94,7 +104,9 @@ def group_patients(patient_data):
                 days_to_bday = bday_next_year - current_date
                 patient['days_to_bday'] = days_to_bday.days
 
-            upcoming_birthdays.append(patient)
+            # only include if birthday is coming up in [2] months
+            if patient['days_to_bday'] <= FUTURE_BDAY_RANGE:
+                upcoming_birthdays.append(patient)
 
     recently_passed.sort(key=lambda x: x['days_since_bday'])
     upcoming_birthdays.sort(key=lambda x: x['days_to_bday'])
