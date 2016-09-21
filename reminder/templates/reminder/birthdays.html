@@ -151,6 +151,8 @@
 
       {% endfor %}
 
+
+
       <!--
       Maybe add communication functionality
       <div class="patient-communication">
@@ -172,7 +174,6 @@
     /*Set initial profile for viewing to be first on upcoming list*/
     var activeProfile = document.getElementById('profile-'.concat({{ upcoming.0.id }}));
     activeProfile.className = "patient-profile";
-  
   </script>
   <script src="{% static 'reminder/js/manage_groups.js' %}"></script>
   

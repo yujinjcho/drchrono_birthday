@@ -146,10 +146,51 @@ def get_currentdate(datetime_obj):
     date_now = datetime_obj
     return datetime(date_now.year, date_now.month, date_now.day)
 
+def remove_unused_fields(data):
+    # removing data we're not using
+    
+    patient_data = [
+        get_reduced_dict(patient)
+        for patient in data
+    ]
+
+    return patient_data
+
+def get_reduced_dict(old_dict):
+    new_dict = {}
+
+    dict_keys = [
+        'last_name',
+        'id',
+        'first_name', 
+        'middle_name',
+        'gender',
+        'date_of_last_appointment',
+        'doctor', 
+        'date_of_birth', 
+        'home_phone', 
+        'email', 
+        'patient_photo', 
+        'office_phone', 
+        'cell_phone'
+    ]
+
+    for new_key in dict_keys:
+        new_dict[new_key] = old_dict[new_key]
+
+    return new_dict
+
+def transform_patient_data(request, data):
+    patient_data = filter_no_dob(data)
+    patient_data = remove_unused_fields(patient_data)
+    patient_data = add_msg_marker(request, patient_data)
+    return patient_data
+
 def group_patients(request, patient_data):
     
     # Currently excluding patients without date of birth data
-    patient_data = add_msg_marker(request, filter_no_dob(patient_data))
+    #patient_data = add_msg_marker(request, filter_no_dob(patient_data))
+    patient_data = transform_patient_data(request, patient_data)
     current_date = get_currentdate(datetime.now())
     
     recently_passed = []

@@ -69,16 +69,9 @@
   }
 
   function showProfile(e){
-
       hideProfiles();
-      var arrayLength = patient_data.length;
-      for (var i = 0; i < arrayLength; i++) {
-          if (patient_data[i].id == e.currentTarget.id ) {
-            
-            var activeProfile = document.getElementById('profile-'.concat(patient_data[i].id));
-            activeProfile.className = "patient-profile";
-          };
-      };
+      var activeProfile = document.getElementById('profile-'.concat(e.currentTarget.id));
+      activeProfile.className = "patient-profile";
     };
 
   function hideProfiles(){
