@@ -11,7 +11,6 @@ from django.contrib.auth.decorators import login_required
 from . import drchrono_config
 from .models import Message
 
-# Create your views here.
 def index(request):
     DRCHRONO_REDIRECT = "https://drchrono.com/o/authorize/?redirect_uri=%s&response_type=code&client_id=%s" % (drchrono_config.REDIRECT_URI, drchrono_config.CLIENT_ID)
     return render(
@@ -31,19 +30,22 @@ def auth_redirect(request):
     })
     response.raise_for_status()
     data = response.json()
-    access_token = data['access_token']
-    handle_user(request, access_token)
-    return redirect('reminder:birthdays', access=access_token)
+    request.session['access_token'] = data['access_token']
+    handle_user(request, data['access_token'])
+    return redirect('reminder:birthdays')
     
 @login_required
-def birthdays(request, access):
-    data = get_patient_data(access)
-    recently_passed, upcoming = group_patients(data)
+def birthdays(request):
+    data = get_patient_data(request.session['access_token'])
+    recently_passed, upcoming = group_patients(request, data)
     
     if upcoming:
         current_patient = upcoming[0]
     else:
         current_patient = None
+
+
+
     return render(
         request, 
         'reminder/birthdays.html', 
@@ -65,7 +67,6 @@ def create_message(request):
     )
     new_message.save()
     return HttpResponse("Created Successfully")
-
 
 #Helper functions
 def get_user_data(access_token):
@@ -105,23 +106,52 @@ def get_patient_data(access_token):
 
     return patients
 
-def group_patients(patient_data):
-    
-    # Currently excluding patients without dob data
-    patient_data = [
-        patient for patient in patient_data 
+def filter_no_dob(data):
+    return [
+        patient for patient in data 
         if patient["date_of_birth"]
     ]
 
-    date_now = datetime.now()
-    current_date = datetime(date_now.year, date_now.month, date_now.day)
+def add_msg_marker(request, data):
+    for patient in data:
+        recent_messages = Message.objects.filter(
+            patient_id = patient['id'],
+            user = request.user
+        ).order_by('-creation_date')
+
+        # shows if the most recent message from this doctor
+        # to a patient is within 60 days
+        if recent_messages:
+            recent_message = recent_messages[0]
+            current_date = get_currentdate(datetime.now())
+            recent_message_date = get_currentdate(recent_message.creation_date)
+            days_apart = (current_date - recent_message_date).days
+
+            if abs(days_apart) <= 60:
+                patient['msg_sent'] = True
+            else:
+                patient['msg_sent'] = False    
+        else:
+            patient['msg_sent'] = False
+
+    return data
+
+def get_currentdate(datetime_obj):
+    date_now = datetime_obj
+    return datetime(date_now.year, date_now.month, date_now.day)
+
+def group_patients(request, patient_data):
+    
+    # Currently excluding patients without date of birth data
+    patient_data = add_msg_marker(request, filter_no_dob(patient_data))
+    current_date = get_currentdate(datetime.now())
     
     recently_passed = []
     upcoming_birthdays = []
 
     #Determine appropriate date range for birthday greetings
     PAST_BDAY_RANGE = -14
-    FUTURE_BDAY_RANGE = 340
+    FUTURE_BDAY_RANGE = 100
 
     for patient in patient_data:
         bday = datetime.strptime(

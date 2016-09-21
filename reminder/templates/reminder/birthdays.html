@@ -21,14 +21,11 @@
       </div>
 
 
+      <!-- Clickable menu for patients with upcoming birthdays -->
       <div class="list-group upcoming-group">
         
         {% for patient in upcoming %}
-        <!--
-        <a href="#" class="list-group-item" id="{{ patient.id }}" onclick="showProfile({{ patient.id }})">
-        -->
         <a href="#" class="list-group-item" id="{{ patient.id }}">
-
 
           <h4 class="list-group-item-heading">{{ patient.first_name }} {{ patient.middle_name}} {{ patient.last_name}} </h4>
           <p class="list-group-item-text">
@@ -38,20 +35,34 @@
               In {{ patient.days_to_bday }} day{{ patient.days_to_bday|pluralize}}
             {% endif %}
           </p>
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+          
+          {% if patient.msg_sent %}
+            <span class="glyphicon glyphicon-ok msg-sent" aria-hidden="true"></span>
+          {% else %}
+            <span class="glyphicon glyphicon-ok " aria-hidden="true"></span>
+          {% endif %}
+
+          
         </a>
         {% endfor %}
       </div>
 
+      <!-- patients with recently passed birthdays -->
       <div class="list-group passed-group hide-group">
         
         {% for patient in passed %}
-        <a href="#" class="list-group-item" id="{{ patient.id }}" onclick="showProfile({{ patient.id }})">
+        <a href="#" class="list-group-item" id="{{ patient.id }}">
           <h4 class="list-group-item-heading">{{ patient.first_name }} {{ patient.middle_name}} {{ patient.last_name}} </h4>
           <p class="list-group-item-text">
               {{ patient.days_since_bday|stringformat:"+d"|slice:"1:" }} day{{ patient.days_since_bday|pluralize}} ago
           </p>
-          <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+
+          {% if patient.msg_sent %}
+            <span class="glyphicon glyphicon-ok msg-sent" aria-hidden="true"></span>
+          {% else %}
+            <span class="glyphicon glyphicon-ok " aria-hidden="true"></span>
+          {% endif %}
+          
         </a>
         {% endfor %}
       </div>
@@ -108,16 +119,12 @@
 
         <button type="button" id="greet-{{ current_patient.id }}" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12">Sent Greetings</button>
 
-        <!--
-        <button type="button" id="greet-{{ current_patient.id }}" class="btn btn-default greetings-btn col-md-12 col-lg-12 col-sm-12 col-xs-12" onclick="toggleCheckMark({{ current_patient.id }})">Sent Greetings</button>
-        -->
-
       </div>
 
       {% endfor %}
 
       <!--
-      ADD COMMUNICATION FUNCTIONALITY
+      Maybe add communication functionality
       <div class="patient-communication">
         info on communication goes here
       </div>

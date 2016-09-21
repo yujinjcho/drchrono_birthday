@@ -6,7 +6,6 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.contrib.auth.models import User
 from django.db import models
 
-# Create your models here.
 
 @python_2_unicode_compatible
 class Message(models.Model):
