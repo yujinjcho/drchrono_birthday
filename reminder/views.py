@@ -4,7 +4,7 @@ from datetime import datetime
 
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, render_to_response
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 
@@ -67,6 +67,12 @@ def create_message(request):
     )
     new_message.save()
     return HttpResponse("Created Successfully")
+
+def user_logout(request):
+    logout(request)
+    return redirect('reminder:index')
+
+
 
 #Helper functions
 def get_user_data(access_token):

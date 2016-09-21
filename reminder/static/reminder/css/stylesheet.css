@@ -1,7 +1,20 @@
 #main-container {
-    margin-top: 20px;
+    margin-top: 65px;
 }
 
+.navbar {
+    border-bottom: 1px solid rgba(150,150,150,.5);
+}
+
+#drchrono_logo {
+    height: 50px;
+    margin-bottom: 10px;
+}
+
+#brand-logo {
+    height: 30px;
+    margin-top: 10px;
+}
 
 .button-container {
     text-align: center;

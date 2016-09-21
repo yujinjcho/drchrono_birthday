@@ -4,8 +4,36 @@
   <title>Birthday Reminder</title>
   <link rel="stylesheet" type"text/css" href="{% static 'reminder/css/bootstrap.css' %}" />
   <link rel="stylesheet" type"text/css" href="{% static 'reminder/css/stylesheet.css' %}" />
+
+
 </head>
 <body>
+
+
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+          <!-- Brand and toggle get grouped for better mobile display -->
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <img src="https://upload.wikimedia.org/wikipedia/en/1/1d/Drchrono_logo.png" id="brand-logo">
+          </div>
+          <!-- Collect the nav links, forms, and other content for toggling -->
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+              <ul class="nav navbar-nav navbar-right">
+                  <li>
+                      <a href="http://127.0.0.1:8000/logout">Logout</a>
+                  </li>
+              </ul>
+          </div>
+          <!-- /.navbar-collapse -->
+      </div>
+      <!-- /.container -->
+  </nav>
 
   
 
@@ -137,6 +165,7 @@
   </div>
 
   <script src="{% static 'reminder/js/jquery-3.1.0.min.js' %}"></script>
+  <script src="{% static 'reminder/js/bootstrap.js' %}"></script>
   <script type="text/javascript">
     var patient_data = {{ patient_data_json|safe }};
 
