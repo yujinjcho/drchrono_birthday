@@ -151,7 +151,7 @@ def group_patients(request, patient_data):
 
     #Determine appropriate date range for birthday greetings
     PAST_BDAY_RANGE = -14
-    FUTURE_BDAY_RANGE = 100
+    FUTURE_BDAY_RANGE = 60
 
     for patient in patient_data:
         bday = datetime.strptime(
