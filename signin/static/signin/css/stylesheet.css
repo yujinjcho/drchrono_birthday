@@ -20,7 +20,6 @@ body {
 }
 
 /*PATIENT SIGNIN*/
-
 .patient-signin-container {
     border: 1px solid rgba(255,255,255,0);
 }
@@ -44,11 +43,15 @@ body {
 .profile-pic {
     height: 110px;
     max-width: 100%;
+    border: 1px solid rgba(100,100,100,.5);
+}
+
+#patient-info {
+    text-align: center;
 }
 
 
 /*APPOINTMENTS*/
-    
 .appointment-main-container {
     padding-top: 50px;
 }

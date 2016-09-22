@@ -49,10 +49,25 @@
     var appointmentBtn = document.getElementById('check-appointment-btn');
     var appointmentHref = appointmentBtn.getAttribute('href');
     var patientId = data.id;
-    appointmentBtn.setAttribute(
-      'href', 
-      appointmentHref.concat('?id=').concat(patientId)
-    );
+    
+    ///signin/check_appointments/?id=61105362
+
+    if (appointmentHref.substr(-1) == "/") {
+      appointmentBtn.setAttribute(
+        'href', 
+        appointmentHref.concat('?id=').concat(patientId)
+      );  
+    } else {
+      if (appointmentHref.includes(patientId)) {
+        return
+      } else {
+        appointmentBtn.setAttribute(
+        'href', 
+        appointmentHref.substring(0, 27).concat('?id=').concat(patientId)
+      );  
+      }
+    }
+    
 
   };
 

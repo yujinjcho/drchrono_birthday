@@ -36,36 +36,18 @@ def auth_redirect(request):
 def patient_signin(request):
     return render(request, 'signin/patient_signin.html')
 
+
+
 @login_required
-def find_patient(request):
-    patients_data = get_patient_data(request.session['access_token'])
+def find_patients(request):
+    patients_data = get_patient_data(request)
 
-    first_name = request.POST.get('first_name')
-    last_name = request.POST.get('last_name')
-    date_of_birth = request.POST.get('date_of_birth')
-
-    # make sure case not sensitive
-    # look into querying through api not here
-    patients_filtered = [
-        patient for patient in patients_data 
-        if patient['first_name'].lower() == first_name.lower()
-        if patient['last_name'].lower() == last_name.lower()
-        if patient['date_of_birth'] == date_of_birth
-    ]
-
-    if patients_filtered:
-        patient = patients_filtered[0]
+    if patients_data:
+        patient = patients_data[0]
     else:
         patient = None
     
     return JsonResponse(patient, safe=False)
-
-@login_required
-def find_appointment(request):
-    patient_id = request.POST.get('patient_id')
-    date_now = get_current_date(datetime.now())
-    appointment_data = get_appointment_data(request.session['access_token'], patient_id)
-    return JsonResponse(appointment_data, safe=False)
 
 @login_required
 def check_appointments(request):
@@ -118,12 +100,20 @@ def handle_user(request, access_token):
     
     login(request, user)
 
-def get_patient_data(access_token):
+def get_patient_data(request):
+    first_name = request.POST.get('first_name')
+    last_name = request.POST.get('last_name')
+    date_of_birth = request.POST.get('date_of_birth')
+
     headers = {
-        'Authorization': 'Bearer %s' % access_token,
+        'Authorization': 'Bearer %s' % request.session['access_token'],
     }
     patients = []
-    patients_url = 'https://drchrono.com/api/patients'
+    
+    #/api/patients/?date_of_birth=YYYY-MM-DD&first_name=X&last_name=Y
+    query_params = (date_of_birth, first_name, last_name)
+    query_url = '?date_of_birth=%s&first_name=%s&last_name=%s' % query_params
+    patients_url = 'https://drchrono.com/api/patients' + query_url
     
     while patients_url:
         data = requests.get(patients_url, headers=headers).json()
