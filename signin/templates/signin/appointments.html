@@ -8,10 +8,29 @@
 </head>
 <body>
 
-    <div class="patient-main-container">
+    <div class="appointment-main-container col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
         <h1 class="patient-header">Appointments</h1>
-        <p>{{ patient_id }}</p>
+
+        <div class="appointment-list col-lg-8 col-lg-offset-2">
+          {% for appointment in appointments %}
+            <a href="#" class="list-group-item">
+
+              <h4 class="list-group-item-heading">{{appointment.reason}}</h4>
+              <p class="list-group-item-text">
+                Exam Room {{ appointment.exam_room }} ({{appointment.start_time}})
+              </p>
+              <p class="list-group-item-text">
+                
+              </p>
+            </a>
+          {% endfor %}
+        </div>
+
+        <!--
+        <p>{{ appointments }}</p>
+      -->
+      
 
         
 

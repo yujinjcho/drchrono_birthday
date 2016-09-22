@@ -10,13 +10,13 @@
 
     <div class="patient-main-container">
 
-        <h1 class="patient-header">Patient Signin</h1>
+        <h1 class="patient-header">Patient Sign-in</h1>
 
         <div class="container patient-signin-container col-lg-6 col-lg-offset-3">
             <div class="row">
                 <form role="form" method='POST' action="http://127.0.0.1:8000/signin/find_patient/">
                     <div class="col-lg-12">
-                        <div class="well well-sm"><strong><span class="glyphicon glyphicon-asterisk"></span>Required Field</strong></div>
+                        
                         <div class="form-group">
                             <label for="InputFirstName">First Name</label>
                             <div class="input-group">
@@ -37,13 +37,15 @@
                                 <input type="date" class="form-control" name="DateofBirth" id="DateofBirth" value="1980-03-20"required>
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
                             </div>
+                            <br>
+                            <div class=""><span class="glyphicon glyphicon-asterisk"></span><strong>Required Field</strong></div>
                         </div>
                         
                         
-                        <button id="patient-signin-btn" type="button" class="btn btn-default">Submit</button>
+                        <button id="patient-signin-btn" type="button" class="btn btn-default btn-lg">Search</button>
 
                         <div id="patient-not-found-alert" class="alert alert-warning patient-alert" role="alert">
-                            Your information is not found. If the information is correct, please 
+                            Your information could not be found. If the information is correct, please 
                             <button type="button" class="btn btn-default create-patient-btn">Create Account</button>
                         </div>
 
@@ -52,7 +54,8 @@
                                 blah
                             </div>
                             <br>
-                            If the information is correct, please confirm.
+                            If information is not correct, please search again. Otherwise, please proceed to appointments. Thank you.
+                            <br>
                             <br>
                             <!--
                             <button id='find-appointment-btn' type="button" class="btn btn-default create-patient-btn">Find Appointment</button>

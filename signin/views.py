@@ -71,9 +71,16 @@ def find_appointment(request):
 def check_appointments(request):
     patient_id = request.GET.get('id')
     appointment_data = get_appointment_data(request.session['access_token'], patient_id)
-    return render(request, 'signin/appointments.html', {"patient_id":appointment_data["results"]})
+    data = transform_appointment_data(appointment_data["results"])
+    return render(request, 'signin/appointments.html', {"appointments":data, "time":datetime.now()})
 
 #helper functions
+def transform_appointment_data(data):
+    for appointment in data:
+        appointment['start_time'] = convert_time_to_str(appointment['scheduled_time'][-8:])
+
+    return data
+
 def get_user_data(access_token):
     response = requests.get(
         'https://drchrono.com/api/users/current', 
@@ -128,3 +135,24 @@ def get_patient_data(access_token):
 def get_current_date(datetime_obj):
     date_now = datetime_obj
     return datetime(date_now.year, date_now.month, date_now.day)
+
+def convert_time_to_str(s):
+    h_m_s = s.split(":")
+    hour, minutes, seconds = [int(metric) for metric in h_m_s]
+
+    if hour <= 23 and hour >= 12:
+        time_of_day = "PM"
+    else:
+        time_of_day = "AM"
+
+    if hour >= 13:
+        hour = hour - 12
+
+    return "%d:%02d%s" % (hour,minutes, time_of_day)
+    #return str(hour) + ":" + str(minutes) + ":" + str(seconds) + time_of_day
+
+
+    #   
+
+
+

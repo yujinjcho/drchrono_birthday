@@ -41,16 +41,11 @@
     var email = document.getElementById('email');
 
     profilePic.innerHTML = '<img class="profile-pic" src='.concat(data.patient_photo).concat('>')
-    socialSecurityNumber.innerHTML = 'SSN: '.concat(data.social_security_number);
-    email.innerHTML = 'Email: '.concat(data.email);
+    socialSecurityNumber.innerHTML = '<strong>SSN</strong>: '.concat(data.social_security_number);
+    email.innerHTML = '<strong>Email</strong>: '.concat(data.email);
   };
 
   function setAppointmentFinder(data){
-    /*
-    var appointmentBtn = document.getElementById('find-appointment-btn');
-    appointmentBtn.setAttribute('data', data.id);
-    appointmentBtn.addEventListener('click', findAppointments);
-    */
     var appointmentBtn = document.getElementById('check-appointment-btn');
     var appointmentHref = appointmentBtn.getAttribute('href');
     var patientId = data.id;
@@ -61,18 +56,7 @@
 
   };
 
-  function handleAppointmentResponse(data){
-    if (data.count == 0) {
-      return
-    } else {
-      //Assuming only one appointment for now
-      //Think about how to handle multiple
-
-
-    }
-
-  };
-
+  /*
   function findAppointments(e){
 
     var patientId = document.getElementById(e.currentTarget.id).getAttribute('data');
@@ -88,6 +72,7 @@
     );
 
   };
+  */
 
   function findPatient() {
 

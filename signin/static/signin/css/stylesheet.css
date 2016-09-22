@@ -1,4 +1,6 @@
-
+body {
+    background: #f5f5f5;
+}
 
 /*LOGIN*/
 .login-container{
@@ -44,3 +46,13 @@
     max-width: 100%;
 }
 
+
+/*APPOINTMENTS*/
+    
+.appointment-main-container {
+    padding-top: 50px;
+}
+
+.appointment-list {
+    margin-top: 50px;
+}
