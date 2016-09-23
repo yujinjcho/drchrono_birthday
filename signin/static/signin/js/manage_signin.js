@@ -26,7 +26,7 @@
     }
     else {
       //If Patient information is found
-      patientFound.className = "alert alert-success"
+      patientFound.className = "alert"
       patientNotFound.className = "alert alert-warning patient-alert"
       createPatientInfo(data);
       setAppointmentFinder(data);

@@ -16,54 +16,65 @@
             <div class="row">
                 <form role="form">
 
-                    <div class="col-lg-12">
+                    <div class="col-lg-12 id-container">
                         
-                        <div class="form-group">
-                            <label for="InputFirstName">First Name</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="InputFirstName" id="InputFirstName" placeholder="First Name" value='Daniel' required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                        <div class='subsection-header'>Identification</div>
+                            <div class="search-container">
+                                <label for="InputFirstName">First Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="InputFirstName" id="InputFirstName" placeholder="First Name" value='Daniel' required>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-zoom-in"></span></span>
+                                </div>
+
+                                <br>
+                                <label for="InputLastName">Last Name</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" name="InputLastName" id="InputLastName" placeholder="Last Name" value="Kivatinos" required>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-zoom-in"></span></span>
+                                </div>
+
+                                <br>
+                                <label for="DateofBirth">Date of Birth</label>
+                                <div class="input-group">
+                                    <input type="date" class="form-control" name="DateofBirth" id="DateofBirth" value="1980-03-20"required>
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+                                </div>
+                                <br>
+                                
+                                <div class="btn-container">
+                                    <button id="patient-signin-btn" type="button" class="btn btn-primary btn-lg">Search</button>
+                                </div>
                             </div>
 
-                            <br>
-                            <label for="InputLastName">Last Name</label>
-                            <div class="input-group">
-                                <input type="text" class="form-control" name="InputLastName" id="InputLastName" placeholder="Last Name" value="Kivatinos" required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div id="patient-not-found-alert" class="alert alert-warning patient-alert" role="alert">
+                                Your information could not be found. If the information is correct, please  &nbsp 
+                                <button type="button" class="btn btn-default create-patient-btn">Create Account</button>
                             </div>
 
-                            <br>
-                            <label for="DateofBirth">Date of Birth</label>
-                            <div class="input-group">
-                                <input type="date" class="form-control" name="DateofBirth" id="DateofBirth" value="1980-03-20"required>
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-asterisk"></span></span>
+                            <div id="patient-found-alert" class="patient-alert" role="alert">
+
+                                <div class='subsection-header'>Search Result</div>
+
+                                <div id="patient-info">
+                                    Not Available
+                                </div>
+                                <br>
+                                
+                                <div class="btn-container">
+                                    <a id="check-appointment-btn" href="{% url 'signin:check_appointments' %}"><button type="button" class="btn btn-success create-patient-btn btn-lg">Find Appointment</button></a>
+                                </div>
                             </div>
-                            <br>
-                            <div class=""><span class="glyphicon glyphicon-asterisk"></span><strong>Required Field</strong></div>
+
+
+
+
+
                         </div>
                         
                         
-                        <button id="patient-signin-btn" type="button" class="btn btn-default btn-lg">Search</button>
+                        
 
-                        <div id="patient-not-found-alert" class="alert alert-warning patient-alert" role="alert">
-                            Your information could not be found. If the information is correct, please 
-                            <button type="button" class="btn btn-default create-patient-btn">Create Account</button>
-                        </div>
-
-                        <div id="patient-found-alert" class="alert alert-success patient-alert" role="alert">
-                            <div id="patient-info">
-                                blah
-                            </div>
-                            <br>
-                            If information is not correct, please search again. Otherwise, please proceed to appointments. Thank you.
-                            <br>
-                            <br>
-                            <!--
-                            <button id='find-appointment-btn' type="button" class="btn btn-default create-patient-btn">Find Appointment</button>
-                            -->
-                            <a id="check-appointment-btn" href="{% url 'signin:check_appointments' %}"><button type="button" class="btn btn-default create-patient-btn">Find Appointment</button></a>
-                        </div>
-
+                        
                         
                         <!--
                         <input type="submit" name="submit" id="submit" value="Submit" class="btn btn-info pull-right">

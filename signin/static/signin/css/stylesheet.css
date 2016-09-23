@@ -20,12 +20,26 @@ body {
 }
 
 /*PATIENT SIGNIN*/
+.id-container {
+    border: 1px solid rgba(150,150,150,.8);
+    padding-left: 0px;
+    padding-right: 0px;
+    background: white;
+}
+
+.search-container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
 .patient-signin-container {
-    border: 1px solid rgba(255,255,255,0);
+    margin-bottom: 40px;
+
 }
 
 .patient-header {
     text-align: center;
+    margin-bottom: 30px;
 }
 
 .patient-main-container {
@@ -33,7 +47,8 @@ body {
 }
 
 #patient-signin-btn {
-    margin-bottom: 15px; 
+    width: 200px;
+    margin-bottom: 15px;
 }
 
 .patient-alert {
@@ -44,10 +59,19 @@ body {
     height: 110px;
     max-width: 100%;
     border: 1px solid rgba(100,100,100,.5);
+    margin-top: 5px;
 }
 
 #patient-info {
     text-align: center;
+}
+
+#create-patient-btn {
+    width: 200px;
+}
+
+#patient-not-found-alert {
+    margin-bottom: 0px;
 }
 
 /*APPOINTMENTS*/
@@ -57,6 +81,10 @@ body {
 
 .appointment-list {
     margin-top: 50px;
+}
+
+.list-group-item {
+    border: 1px solid rgba(150,150,150, .7);
 }
 
 /*PATIENT FORM*/
@@ -74,6 +102,7 @@ body {
     margin-bottom: 20px;
 
 }
+
 
 .subsection-header {
     margin-bottom: 30px;
@@ -100,6 +129,26 @@ body {
 .form-submit-container {
     width: 100%;
     text-align: center;
+}
+
+#patient-found-alert {
+    border: 1px solid rgba(200,200,200,.8);
+    border-bottom: none;
+    border-top: none;
+    background: white;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+}
+
+.search-results {
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border: 1px solid black;
 }
 
 /*Allergies*/
@@ -132,6 +181,8 @@ body {
 
 .add-allergy-container {
     text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 
 .allergy-form-container {
@@ -146,4 +197,15 @@ body {
 
 .add-btn-container {
     text-align:center;
+}
+
+#exit-checkin{
+    width: 200px;
+    margin-left: 50px;
+
+}
+
+.btn-container {
+    width: 100%;
+    text-align: center;
 }

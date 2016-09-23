@@ -64,6 +64,7 @@ def check_appointments(request):
 @login_required
 def patient_form(request):
     patient_id = request.GET.get('patient_id')
+    appt_id = request.GET.get('appt_id')
     patient = get_patient_by_id(request, patient_id)
     general, location, employer, contact = organize_forms()
     json_data = json.dumps(general + location + employer + contact)
@@ -79,7 +80,8 @@ def patient_form(request):
             'contact': contact,
             'patient': patient,
             "json_data" : json_data,
-            'patient_json': patient_json
+            'patient_json': patient_json,
+            'appt_id': appt_id
         }
     )
 
@@ -91,14 +93,10 @@ def patient_form_submit(request):
     r.raise_for_status()
     return HttpResponse('success')
 
-########################################
-########################################
-########################################
-########################################
-
 @login_required
 def allergies(request):
     patient = request.GET.get('patient')
+    appt_id = request.GET.get('appt_id')
     
     response = requests.get(
         'https://drchrono.com/api/allergies', 
@@ -116,7 +114,9 @@ def allergies(request):
         {
             'allergies': allergies['results'],
             'allergy_types':allergy_types,
-            'reactions': reactions
+            'reactions': reactions,
+            'patient_id': patient,
+            'appt_id': appt_id
         }
     )
 
@@ -127,12 +127,18 @@ def allergies(request):
 
 @login_required
 def exit(request):
+    appt_id = request.GET.get('appt_id')
+
+    response = requests.patch(
+        'https://drchrono.com/api/appointments/' + appt_id, 
+        data= {'status': 'Arrived'},
+        headers=get_header(request)
+    )
+    response.raise_for_status()
     return render(
         request, 
         'signin/exit.html'
     )
-
-
 
 #helper functions
 def organize_forms():
