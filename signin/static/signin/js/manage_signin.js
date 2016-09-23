@@ -71,24 +71,6 @@
 
   };
 
-  /*
-  function findAppointments(e){
-
-    var patientId = document.getElementById(e.currentTarget.id).getAttribute('data');
-    var csrftoken = getCookie('csrftoken');
-
-    $.post(
-      "http://127.0.0.1:8000/signin/find_appointment/",
-      {
-        "patient_id": patientId,
-        'csrfmiddlewaretoken': csrftoken
-      },
-      function(data){handleAppointmentResponse(data)}
-    );
-
-  };
-  */
-
   function findPatient() {
 
     var firstName = document.getElementById("InputFirstName")

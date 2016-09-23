@@ -14,11 +14,11 @@
 
         <div class="appointment-list col-lg-8 col-lg-offset-2">
           {% for appointment in appointments %}
-            <a href="#" class="list-group-item">
+            <a href="{% url 'signin:patient_form' %}?appt_id={{ appointment.id }}&patient_id={{ patient_id }}" class="list-group-item">
 
-              <h4 class="list-group-item-heading">{{appointment.reason}}</h4>
+              <h4 class="list-group-item-heading">Exam Room {{ appointment.exam_room }}</h4>
               <p class="list-group-item-text">
-                Exam Room {{ appointment.exam_room }} ({{appointment.start_time}})
+                 {{appointment.reason}} at {{appointment.start_time}}
               </p>
               <p class="list-group-item-text">
                 

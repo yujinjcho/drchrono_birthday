@@ -1,0 +1,92 @@
+{% load static %}
+<html>
+<head>
+  <title>Patient Form</title>
+  <link rel="stylesheet" type"text/css" href="{% static 'signin/css/bootstrap.css' %}" />
+  <link rel="stylesheet" type"text/css" href="{% static 'signin/css/stylesheet.css' %}" />
+  
+</head>
+<body>
+
+    <div class="patient-main-container">
+
+        <h1 class="patient-header">Patient Form</h1>
+        <p class="form-message">Please update or fill in missing information</p>
+        
+        <div class='patient-form-container col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2'>
+            
+            <div class="patient-form-info patient-info-general">
+                <div class='subsection-header'>General</div>
+                {% for field in general %}
+                <div class="form-group row col-lg-6">
+                  <label for="patient-{{ field }}" class="col-xs-4 col-form-label">{{ field|convert_to_title }}</label>
+                  <div class="col-xs-8">
+                      <input class="form-control" type="text" value="{{ patient|get_item:field }}" id="patient-{{ field }}">
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="patient-form-info patient-info-location">
+                <div class='subsection-header'>Geographical</div>
+
+                {% for field in location %}
+                <div class="form-group row col-lg-6">
+                  <label for="patient-{{ field }}" class="col-xs-4 col-form-label">{{ field|convert_to_title }}</label>
+                  <div class="col-xs-8">
+                    <input class="form-control" type="text" value="{{ patient|get_item:field }}" id="patient-{{ field }}">
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="patient-form-info patient-info-employer">
+                <div class='subsection-header'>Employer</div>
+
+                {% for field in employer %}
+                <div class="form-group row col-lg-6">
+                  <label for="patient-{{ field }}" class="col-xs-4 col-form-label">{{ field|convert_to_title }}</label>
+                  <div class="col-xs-8">
+                    <input class="form-control" type="text" value="{{ patient|get_item:field }}" id="patient-{{ field }}">
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="patient-form-info patient-info-contact">
+                <div class='subsection-header'>Contact</div>
+
+                {% for field in contact %}
+                <div class="form-group row col-lg-6">
+                  <label for="patient-{{ field }}" class="col-xs-4 col-form-label">{{ field|convert_to_title }}</label>
+                  <div class="col-xs-8">
+                    <input class="form-control" type="phone" value="{{ patient|get_item:field }}" id="patient-{{ field }}">
+                  </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="form-submit-container">
+              <button id="form-submit" class="btn btn-primary btn-lg patient-form-submit">Submit</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+      var data = {{ json_data|safe }};
+      var patient_id = {{patient.id}};
+      var doctor_id = {{patient.doctor}};
+      var patient_data = {{ patient_json|safe }};
+      var exit_url = "{% url 'signin:allergies' %}?patient=".concat(patient_id);
+      //var exit_url = "{% url 'signin:allergies' %}";
+
+    </script>
+    <script src="{% static 'signin/js/jquery-3.1.0.min.js' %}"></script>
+    <script src="{% static 'signin/js/patient_form.js' %}"></script>
+    
+
+</body>
+</html>
+
+
+
