@@ -62,8 +62,7 @@ def create_message(request):
     current_user = request.user
     new_message = Message(
         user=current_user,
-        patient_id = request.POST.get('patient_id'),
-        creation_date = datetime.now()
+        patient_id = request.POST.get('patient_id')
     )
     new_message.save()
     return HttpResponse("Created Successfully")
