@@ -252,7 +252,7 @@ def organize_forms():
 def transform_appointment_data(data):
     '''Adds AM and PM time format to each object '''
     for appointment in data:
-        appointment['start_time'] = convert_time_to_str(appointment['scheduled_time'][-8:])
+        appointment['start_time'] = convert_time_to_str(appointment['scheduled_time'])
 
     return data
 
@@ -347,18 +347,10 @@ def get_current_date(datetime_obj):
 
 def convert_time_to_str(s):
     '''Adds AM and PM time format to object'''
-    h_m_s = s.split(":")
-    hour, minutes, seconds = [int(metric) for metric in h_m_s]
 
-    if hour <= 23 and hour >= 12:
-        time_of_day = "PM"
-    else:
-        time_of_day = "AM"
-
-    if hour >= 13:
-        hour = hour - 12
-
-    return "%d:%02d%s" % (hour,minutes, time_of_day)
+    s_datetime_format = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
+    s_strformat = datetime.strftime(s_datetime_format,'%I:%M%p')
+    return s_strformat
 
 def get_header(request):
     '''return header with access token'''
