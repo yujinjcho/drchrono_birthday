@@ -16,6 +16,9 @@
                 <div id="existing-allergy-container" class="patient-info">
                     <div class='allergy-header'>Existing Allergies</div>
                     
+                      {% if not allergies %}
+                        <div id="no-allergies">Currently none</div>
+                      {% endif %}
                       {% for a_allergy in allergies %}
                       <div class="allergy-item">
 
@@ -24,7 +27,7 @@
                           <div class="col-xs-8">
                               <select class="form-control" id="allergy-{{a_allergy.id}}">
                                 <option value="active" selected>active</option>
-                                <option value="Inactive">inactive</option>
+                                <option value="inactive">inactive</option>
                               </select>
 
                           </div>
@@ -74,9 +77,9 @@
 
                         <div class="add-allergy-container">
                           <button id="add-allergy" class="btn btn-primary btn-lg">Add Allergy</button>
-                          <a href="{% url 'signin:exit' %}?appt_id={{ appt_id }}">
-                            <button id="exit-checkin" class="btn btn-success btn-lg">Finish Check-in</button>
-                          </a>
+
+                          <button id="exit-checkin" class="btn btn-success btn-lg">Finish Check-in</button>
+                          
                         </div>
                       </div>
                   </div>
@@ -87,6 +90,10 @@
     <script type="text/javascript">
       var newAllergies = [];
       var patient_id = '{{ patient_id }}';
+      var allergiesSetInactive = [];
+      var existingAllergies = {{ allergies_json|safe }};
+      var appointmentId = "{{ appt_id }}";
+      var exit_url = "{% url 'signin:exit' %}?appt_id={{ appt_id }}"
 
     </script>
     <script src="{% static 'signin/js/jquery-3.1.0.min.js' %}"></script>

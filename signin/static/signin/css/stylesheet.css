@@ -192,7 +192,6 @@ body {
     padding-right: 0px;
     padding-top: 0px;
     margin-top: 0px;
-
 }
 
 .add-btn-container {
@@ -208,4 +207,15 @@ body {
 .btn-container {
     width: 100%;
     text-align: center;
+}
+
+#no-allergies {
+    text-align: center;
+    width: 100%;
+    margin-top: 10px    ;
+    margin-bottom: 10px ;
+}
+
+.no-allergies-hide {
+    display: none;
 }

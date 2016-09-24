@@ -50,8 +50,6 @@
     var appointmentHref = appointmentBtn.getAttribute('href');
     var patientId = data.id;
     
-    ///signin/check_appointments/?id=61105362
-
     if (appointmentHref.substr(-1) == "/") {
       appointmentBtn.setAttribute(
         'href', 

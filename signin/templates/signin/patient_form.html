@@ -78,7 +78,6 @@
       var doctor_id = {{patient.doctor}};
       var patient_data = {{ patient_json|safe }};
       var exit_url = "{% url 'signin:allergies' %}?patient=".concat(patient_id).concat("&appt_id=").concat("{{ appt_id }}");
-      //var exit_url = "{% url 'signin:allergies' %}";
 
     </script>
     <script src="{% static 'signin/js/jquery-3.1.0.min.js' %}"></script>

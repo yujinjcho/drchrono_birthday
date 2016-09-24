@@ -29,8 +29,9 @@
     patient_data['doctor'] = doctor_id;
     patient_data['patient_id'] = patient_id;
 
-    /////
-    //
+    // I was originally using a PUT request instead of PATCH for
+    // the API. Did't want to lose information, so kept all fields,
+    // which was causing an error until I removed the right field.
     delete patient_data['updated_at']
     delete patient_data['offices']
     delete patient_data['id']
@@ -58,7 +59,6 @@
       type: "POST",
       url: "http://127.0.0.1:8000/signin/patient_form_submit/",
       data: patient_data,
-      //success: function(data){return},
       success: function(data){window.location = exit_url},
       error: function(XMLHttpRequst, textStatus, errorThrown){
         alert("There are some errors with your input, please fix them.")
