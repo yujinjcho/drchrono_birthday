@@ -225,8 +225,8 @@ def group_patients(request, patient_data):
             if patient['days_to_bday'] <= FUTURE_BDAY_RANGE:
                 upcoming_birthdays.append(patient)
 
-    recently_passed.sort(key=lambda x: x['days_since_bday'])
+    recently_passed.sort(key=lambda x: x['days_since_bday'], reverse=True)
     upcoming_birthdays.sort(key=lambda x: x['days_to_bday'])
 
-    return recently_passed[::-1], upcoming_birthdays
+    return recently_passed, upcoming_birthdays
     

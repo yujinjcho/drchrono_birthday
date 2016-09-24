@@ -9,9 +9,11 @@ from django.db import models
 
 @python_2_unicode_compatible
 class Message(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    user = models.ForeignKey(User, default=None)
     patient_id = models.IntegerField()
-    creation_date = models.DateTimeField()
+    creator_name = models.CharField(max_length=200, default='', null=True)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.creation_date.strftime('%Y-%m-%d') + str(self.patient_id)
