@@ -18,12 +18,12 @@ from . import drchrono_config
 def index(request):
     '''login page for doctor'''
 
-    params = {
+    query = {
         'redirect_uri': drchrono_config.REDIRECT_URI,
         'response_type': 'code',
         'client_id': drchrono_config.CLIENT_ID
     }
-    DRCHRONO_REDIRECT = add_params_to_url(drchrono_config.AUTH_URI, params)
+    DRCHRONO_REDIRECT = add_query_to_url(drchrono_config.AUTH_URI, query)
 
     return render(
         request,
@@ -73,7 +73,7 @@ def find_patients(request):
 def check_appointments(request):
     '''find appointments for given patient and current date '''
     patient_id = request.GET.get('id')
-    appointment_data = get_appointment_data(request.session['access_token'], patient_id)
+    appointment_data = get_appointment_data(request, patient_id)
 
     # add a given time to a XX:XXAM or XX:XXPM format
     data = transform_appointment_data(appointment_data["results"])
@@ -196,11 +196,18 @@ def exit(request):
     )
 
 # helper functions
-def add_params_to_url(url, params):
+def add_query_to_url(url, query):
     '''accepts url and dict and returns encoded url'''
 
     url_parts = list(urlparse.urlparse(url))
-    url_parts[4] = urlencode(params)
+    url_parts[4] = urlencode(query)
+    return urlparse.urlunparse(url_parts)
+
+def add_path_to_url(url, param):
+    '''accepts url and path and returns encoded url'''
+
+    url_parts = list(urlparse.urlparse(url))
+    url_parts[2] = param
     return urlparse.urlunparse(url_parts)
 
 
@@ -298,21 +305,24 @@ def get_user_data(access_token):
     return data
 
 
-def get_appointment_data(access_token, patient_id):
+def get_appointment_data(request, patient_id):
     '''Returns appointment data for current day '''
 
-    now = datetime.now()
-    today = '-'.join([str(now.year), str(now.month), str(now.day)])
-
-    response = requests.get(
-        'https://drchrono.com/api/appointments',
-        params={"date": today, "patient": patient_id},
-        headers={
-            'Authorization': 'Bearer %s' % access_token
-        }
+    params = {
+        'date': '-'.join([
+            str(datetime.now().year),
+            str(datetime.now().month),
+            str(datetime.now().day)
+        ]),
+        'patient': patient_id
+    }
+    response = handle_api_request(
+        request,
+        'get',
+        '/api/appointments',
+        params=params
     )
 
-    response.raise_for_status()
     data = response.json()
     return data
 
@@ -339,27 +349,55 @@ def get_patient_data(request):
     first name, last name, and date of birth
     '''
 
-    first_name = request.POST.get('first_name')
-    last_name = request.POST.get('last_name')
-    date_of_birth = request.POST.get('date_of_birth')
+    patient_url = add_path_to_url(drchrono_config.BASE_URL, 'api/patients')
+    params = {
+        'first_name': request.POST.get('first_name'),
+        'last_name': request.POST.get('last_name'),
+        'date_of_birth': request.POST.get('date_of_birth')
+    }
 
     headers = {
         'Authorization': 'Bearer %s' % request.session['access_token'],
     }
+
     patients = []
 
-    query_params = (date_of_birth, first_name, last_name)
-    query_url = '?date_of_birth=%s&first_name=%s&last_name=%s' % query_params
-    patients_url = 'https://drchrono.com/api/patients' + query_url
 
-    while patients_url:
-        data = requests.get(patients_url, headers=headers).json()
+    while patient_url:
+        data = requests.get(patient_url, params=params, headers=headers).json()
         patients.extend(data['results'])
 
         # A JSON null on the last page
-        patients_url = data['next']
+        patient_url = data['next']
 
     return patients
+
+def handle_api_request(request, verb, end_point, params=None, data=None):
+    '''handles api request and returns response
+
+    :param str verb: accepts 'patch' and 'get'
+    :param str end_point: api endpoint e.g. '/api/patients'
+    :param dict data: data for 'patch' requests
+    '''
+
+    headers = get_header(request)
+    url = add_path_to_url(drchrono_config.BASE_URL, end_point)
+
+    if verb == 'get':
+        response = requests.get(
+            url,
+            params=params,
+            headers=headers
+        )
+    elif verb == 'patch':
+        response = requests.patch(
+            url,
+            data=data,
+            headers=headers
+        )
+
+    response.raise_for_status()
+    return response
 
 
 def get_patient_by_id(request, patient_id):
