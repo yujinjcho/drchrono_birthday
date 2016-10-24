@@ -18,13 +18,12 @@ from . import drchrono_config
 def index(request):
     '''login page for doctor'''
 
-    auth_uri = 'https://drchrono.com/o/authorize/'
     params = {
         'redirect_uri': drchrono_config.REDIRECT_URI,
         'response_type': 'code',
         'client_id': drchrono_config.CLIENT_ID
     }
-    DRCHRONO_REDIRECT = add_params_to_url(auth_uri, params)
+    DRCHRONO_REDIRECT = add_params_to_url(drchrono_config.AUTH_URI, params)
 
     return render(
         request,
@@ -195,7 +194,6 @@ def exit(request):
         request,
         'signin/exit.html'
     )
-
 
 # helper functions
 def add_params_to_url(url, params):
