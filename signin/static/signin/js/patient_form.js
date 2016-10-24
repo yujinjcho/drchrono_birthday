@@ -24,13 +24,13 @@
   //get values for each input
   function submitForm(){
     var csrftoken = getCookie('csrftoken');
-    
+
     var postData = {
       'csrfmiddlewaretoken': csrftoken,
       'doctor': doctor_id,
-      'patient_id': patient_id  
+      'patient_id': patient_id
     };
-    
+
     var arrayLength = data.length;
     for (var i = 0; i < arrayLength; i++){
       var currentField = document.getElementById("patient-".concat(data[i]));
@@ -44,7 +44,7 @@
       success: function(data){window.location = exit_url},
       error: function(XMLHttpRequst, textStatus, errorThrown){
         alert("There are some errors with your input, please fix them.")
-      };
+      }
     });
   };
 

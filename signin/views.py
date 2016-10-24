@@ -2,6 +2,8 @@ import re
 import json
 import requests
 from datetime import datetime
+from urllib import urlencode
+import urlparse
 
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
@@ -15,7 +17,15 @@ from . import drchrono_config
 
 def index(request):
     '''login page for doctor'''
-    DRCHRONO_REDIRECT = "https://drchrono.com/o/authorize/?redirect_uri=%s&response_type=code&client_id=%s" % (drchrono_config.REDIRECT_URI, drchrono_config.CLIENT_ID)
+
+    auth_uri = 'https://drchrono.com/o/authorize/'
+    params = {
+        'redirect_uri': drchrono_config.REDIRECT_URI,
+        'response_type': 'code',
+        'client_id': drchrono_config.CLIENT_ID
+    }
+    DRCHRONO_REDIRECT = add_params_to_url(auth_uri, params)
+
     return render(
         request,
         'signin/index.html',
@@ -188,6 +198,14 @@ def exit(request):
 
 
 # helper functions
+def add_params_to_url(url, params):
+    '''accepts url and dict and returns encoded url'''
+
+    url_parts = list(urlparse.urlparse(url))
+    url_parts[4] = urlencode(params)
+    return urlparse.urlunparse(url_parts)
+
+
 def format_phone_numbers(data):
     '''Takes an object and checks if 'phone' is in attribute first_name
     and if so, tries to put into phone format. If error, just keeps

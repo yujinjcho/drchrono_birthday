@@ -4,7 +4,7 @@
   <title>Patient Sign-in</title>
   <link rel="stylesheet" type"text/css" href="{% static 'signin/css/bootstrap.css' %}" />
   <link rel="stylesheet" type"text/css" href="{% static 'signin/css/stylesheet.css' %}" />
-  
+
 </head>
 <body>
 
@@ -17,37 +17,37 @@
                 <form role="form">
 
                     <div class="col-lg-12 id-container">
-                        
+
                         <div class='subsection-header'>Identification</div>
                             <div class="search-container">
                                 <label for="InputFirstName">First Name</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="InputFirstName" id="InputFirstName" placeholder="First Name" value='Jenny' required>
+                                    <input type="text" class="form-control" name="InputFirstName" id="InputFirstName" placeholder="First Name" value='Yujin' required>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-zoom-in"></span></span>
                                 </div>
 
                                 <br>
                                 <label for="InputLastName">Last Name</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control" name="InputLastName" id="InputLastName" placeholder="Last Name" value="Harris" required>
+                                    <input type="text" class="form-control" name="InputLastName" id="InputLastName" placeholder="Last Name" value="Cho" required>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-zoom-in"></span></span>
                                 </div>
 
                                 <br>
                                 <label for="DateofBirth">Date of Birth</label>
                                 <div class="input-group">
-                                    <input type="date" class="form-control" name="DateofBirth" id="DateofBirth" value="1980-02-11"required>
+                                    <input type="date" class="form-control" name="DateofBirth" id="DateofBirth" value="1988-09-10"required>
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
                                 </div>
                                 <br>
-                                
+
                                 <div class="btn-container">
                                     <button id="patient-signin-btn" type="button" class="btn btn-primary btn-lg">Search</button>
                                 </div>
                             </div>
 
                             <div id="patient-not-found-alert" class="alert alert-warning patient-alert" role="alert">
-                                Your information could not be found. If the information is correct, please  &nbsp 
+                                Your information could not be found. If the information is correct, please  &nbsp
                                 <button type="button" class="btn btn-default create-patient-btn">Create Account</button>
                             </div>
 
@@ -59,7 +59,7 @@
                                     Not Available
                                 </div>
                                 <br>
-                                
+
                                 <div class="btn-container">
                                     <a id="check-appointment-btn" href="{% url 'signin:check_appointments' %}"><button type="button" class="btn btn-success create-patient-btn btn-lg">Find Appointment</button></a>
                                 </div>
