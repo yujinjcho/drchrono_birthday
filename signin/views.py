@@ -22,6 +22,7 @@ def index(request):
         {'DRCHRONO_REDIRECT': DRCHRONO_REDIRECT}
     )
 
+
 def auth_redirect(request):
     '''directs user to auth server login'''
 
@@ -39,10 +40,12 @@ def auth_redirect(request):
     handle_user(request, data['access_token'])
     return redirect('signin:patient_signin')
 
+
 @login_required
 def patient_signin(request):
     '''page for searching patients'''
     return render(request, 'signin/patient_signin.html')
+
 
 @login_required
 def find_patients(request):
@@ -53,22 +56,24 @@ def find_patients(request):
         patient = patients_data[0]
     else:
         patient = None
-    
+
     return JsonResponse(patient, safe=False)
+
 
 @login_required
 def check_appointments(request):
     '''find appointments for given patient and current date '''
     patient_id = request.GET.get('id')
     appointment_data = get_appointment_data(request.session['access_token'], patient_id)
-    
+
     # add a given time to a XX:XXAM or XX:XXPM format
     data = transform_appointment_data(appointment_data["results"])
     return render(
-        request, 
-        'signin/appointments.html', 
-        {"appointments":data, "patient_id":patient_id}#
+        request,
+        'signin/appointments.html',
+        {"appointments": data, "patient_id": patient_id}
     )
+
 
 @login_required
 def patient_form(request):
@@ -89,11 +94,12 @@ def patient_form(request):
             'employer': employer,
             'contact': contact,
             'patient': patient,
-            "json_data" : json_data,
+            "json_data": json_data,
             'patient_json': patient_json,
             'appt_id': appt_id
         }
     )
+
 
 @login_required
 def patient_form_submit(request):
@@ -105,16 +111,17 @@ def patient_form_submit(request):
     r.raise_for_status()
     return HttpResponse('success')
 
+
 @login_required
 def allergies(request):
     '''Load patient allergy information'''
-    
+
     patient = request.GET.get('patient')
     appt_id = request.GET.get('appt_id')
-    
+
     response = requests.get(
-        'https://drchrono.com/api/allergies', 
-        params= {'patient': patient},
+        'https://drchrono.com/api/allergies',
+        params={'patient': patient},
         headers=get_header(request)
     )
 
@@ -123,11 +130,11 @@ def allergies(request):
     allergy_types, reactions = get_allergy_categories()
 
     return render(
-        request, 
+        request,
         'signin/allergies.html',
         {
             'allergies': allergies['results'],
-            'allergy_types':allergy_types,
+            'allergy_types': allergy_types,
             'reactions': reactions,
             'patient_id': patient,
             'appt_id': appt_id,
@@ -135,9 +142,10 @@ def allergies(request):
         }
     )
 
+
 @login_required
 def update_allergies(request):
-    '''Takes updated allergy information and saves to current 
+    '''Takes updated allergy information and saves to current
     current appointment notes.
     '''
     data = request.POST.copy()
@@ -145,7 +153,7 @@ def update_allergies(request):
     allergies_now_inactive = request.POST.getlist('set_inactive[]')
     new_allergies = json.loads(request.POST.get('new_allergies', ""))
     new_allergies_text = '. '.join([allergy['reaction'] + ": " + allergy['notes'] for allergy in new_allergies])
-    
+
     if allergies_now_inactive:
         updated_note = 'Inactive Allergies: ' + ', '.join(allergies_now_inactive) + '. '
     else:
@@ -153,33 +161,33 @@ def update_allergies(request):
 
     if new_allergies:
         updated_note = updated_note + new_allergies_text
-    
-    patch_data = {'notes' : updated_note}
+
+    patch_data = {'notes': updated_note}
     r = requests.patch(url, data=patch_data, headers=get_header(request))
     r.raise_for_status()
     return HttpResponse(str(len(new_allergies)))
 
 
-
 @login_required
 def exit(request):
-    '''takes patient to exit page and changes status to 'Arrived' 
+    '''takes patient to exit page and changes status to 'Arrived'
     for the given appointment
     '''
     appt_id = request.GET.get('appt_id')
 
     response = requests.patch(
-        'https://drchrono.com/api/appointments/' + appt_id, 
-        data= {'status': 'Arrived'},
+        'https://drchrono.com/api/appointments/' + appt_id,
+        data={'status': 'Arrived'},
         headers=get_header(request)
     )
     response.raise_for_status()
     return render(
-        request, 
+        request,
         'signin/exit.html'
     )
 
-#helper functions
+
+# helper functions
 def format_phone_numbers(data):
     '''Takes an object and checks if 'phone' is in attribute first_name
     and if so, tries to put into phone format. If error, just keeps
@@ -187,7 +195,7 @@ def format_phone_numbers(data):
     '''
     for key, value in data.iteritems():
         if 'phone' in key:
-            
+
             try:
                 phone_pattern = format_phone_number(value)
                 phone_text = '(%s) %s-%s' % (phone_pattern[0], phone_pattern[1], phone_pattern[2])
@@ -201,8 +209,9 @@ def format_phone_numbers(data):
 
     return data
 
+
 def format_phone_number(s):
-    '''takes a variety of phone formats and returns in 
+    '''takes a variety of phone formats and returns in
     (XXX) XXX-XXXX format and appends an optional extension
     number.
     '''
@@ -219,6 +228,7 @@ def format_phone_number(s):
     ''', re.VERBOSE)
     return phone_pattern.search(s).groups()
 
+
 def organize_forms():
     '''Returns patient fields in selected groupings'''
     general = [
@@ -229,9 +239,9 @@ def organize_forms():
     location = ['address', 'city', 'state', 'zip_code']
     employer = [
         'employer',
-        'employer_address', 
-        'employer_city', 
-        'employer_state', 
+        'employer_address',
+        'employer_city',
+        'employer_state',
         'employer_zip_code'
     ]
     contact = [
@@ -249,6 +259,7 @@ def organize_forms():
 
     return general, location, employer, contact
 
+
 def transform_appointment_data(data):
     '''Adds AM and PM time format to each object '''
     for appointment in data:
@@ -256,11 +267,12 @@ def transform_appointment_data(data):
 
     return data
 
+
 def get_user_data(access_token):
     '''Returns user(doctor's) information '''
 
     response = requests.get(
-        'https://drchrono.com/api/users/current', 
+        'https://drchrono.com/api/users/current',
         headers={
             'Authorization': 'Bearer %s' % access_token,
         }
@@ -269,6 +281,7 @@ def get_user_data(access_token):
     data = response.json()
     return data
 
+
 def get_appointment_data(access_token, patient_id):
     '''Returns appointment data for current day '''
 
@@ -276,8 +289,8 @@ def get_appointment_data(access_token, patient_id):
     today = '-'.join([str(now.year), str(now.month), str(now.day)])
 
     response = requests.get(
-        'https://drchrono.com/api/appointments', 
-        params={"date":today,"patient":patient_id},
+        'https://drchrono.com/api/appointments',
+        params={"date": today, "patient": patient_id},
         headers={
             'Authorization': 'Bearer %s' % access_token
         }
@@ -286,6 +299,7 @@ def get_appointment_data(access_token, patient_id):
     response.raise_for_status()
     data = response.json()
     return data
+
 
 def handle_user(request, access_token):
     '''During Authorization process, create user
@@ -300,11 +314,12 @@ def handle_user(request, access_token):
         user.save()
     else:
         user = user_query[0]
-    
+
     login(request, user)
 
+
 def get_patient_data(request):
-    '''Returns patient data based on 
+    '''Returns patient data based on
     first name, last name, and date of birth
     '''
 
@@ -320,13 +335,16 @@ def get_patient_data(request):
     query_params = (date_of_birth, first_name, last_name)
     query_url = '?date_of_birth=%s&first_name=%s&last_name=%s' % query_params
     patients_url = 'https://drchrono.com/api/patients' + query_url
-    
+
     while patients_url:
         data = requests.get(patients_url, headers=headers).json()
         patients.extend(data['results'])
-        patients_url = data['next'] # A JSON null on the last page
+
+        # A JSON null on the last page
+        patients_url = data['next']
 
     return patients
+
 
 def get_patient_by_id(request, patient_id):
     '''Returns patient by id '''
@@ -339,30 +357,35 @@ def get_patient_by_id(request, patient_id):
     patient = [patient for patient in all_patients if patient['id'] == int(patient_id)]
     return patient[0]
 
+
 def get_current_date(datetime_obj):
     '''Returns todays datetime with only year, month, and day'''
 
     date_now = datetime_obj
     return datetime(date_now.year, date_now.month, date_now.day)
 
+
 def convert_time_to_str(s):
     '''Adds AM and PM time format to object'''
 
     s_datetime_format = datetime.strptime(s, '%Y-%m-%dT%H:%M:%S')
-    s_strformat = datetime.strftime(s_datetime_format,'%I:%M%p')
+    s_strformat = datetime.strftime(s_datetime_format, '%I:%M%p')
     return s_strformat
+
 
 def get_header(request):
     '''return header with access token'''
-    headers={
+    headers = {
         'Authorization': 'Bearer %s' % request.session['access_token'],
     }
     return headers
+
 
 @register.filter
 def get_item(dictionary, key):
     '''Allows template to access dictionary by key'''
     return dictionary.get(key)
+
 
 @register.filter
 def convert_to_title(str):
@@ -370,6 +393,7 @@ def convert_to_title(str):
     word_list = str.split('_')
     title_case = ' '.join([word.capitalize() for word in word_list])
     return title_case
+
 
 def get_allergy_categories():
     '''return allergy categories and reactions'''
@@ -380,7 +404,7 @@ def get_allergy_categories():
         'Non-Drug allergy',
         'No Known Drug Allergies (NKA)'
     ]
-        
+
     reaction = [
         'Acute kidney failure',
         'Arthralgia',
@@ -400,6 +424,6 @@ def get_allergy_categories():
         'Shortness of breath/difficulty breathing',
         'Sore throat',
         'Swelling'
-    ]    
+    ]
 
     return allergy_type, reaction
