@@ -203,11 +203,11 @@ def add_query_to_url(url, query):
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
 
-def add_path_to_url(url, param):
+def add_path_to_url(url, path):
     '''accepts url and path and returns encoded url'''
 
     url_parts = list(urlparse.urlparse(url))
-    url_parts[2] = param
+    url_parts[2] = url_parts[2] + '/' + path
     return urlparse.urlunparse(url_parts)
 
 
@@ -399,6 +399,15 @@ def handle_api_request(request, verb, url, params=None, data=None):
 
 def get_patient_by_id(request, patient_id):
     '''Returns patient by id '''
+    url = add_path_to_url(config.BASE_URL, config.PATIENTS)
+    url_w_id = add_path_to_url(url, patient_id)
+    response = handle_api_request(
+        request,
+        'get',
+        url_w_id
+    )
+
+    '''
     headers = {
         'Authorization': 'Bearer %s' % request.session['access_token'],
     }
@@ -407,6 +416,10 @@ def get_patient_by_id(request, patient_id):
     all_patients = data['results']
     patient = [patient for patient in all_patients if patient['id'] == int(patient_id)]
     return patient[0]
+    '''
+
+    return response.json()
+
 
 
 def get_current_date(datetime_obj):
