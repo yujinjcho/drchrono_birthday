@@ -12,7 +12,6 @@ CURRENT_USER = 'api/users/current'
 TOKEN = 'o/token/'
 AUTH = 'o/authorize/'
 
-
 # Allergy categories
 allergy_type = [
     'Specific Drug allergy',
