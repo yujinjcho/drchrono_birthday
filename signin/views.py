@@ -297,7 +297,8 @@ def get_user_data(request):
     response = handle_api_request(
         request,
         'get',
-        'api/users/current',
+        #'api/users/current',
+        config.CURRENT_USER
     )
     data = response.json()
     return data
@@ -317,7 +318,8 @@ def get_appointment_data(request, patient_id):
     response = handle_api_request(
         request,
         'get',
-        '/api/appointments',
+        #'/api/appointments',
+        config.APPOINTMENTS,
         params=params
     )
 

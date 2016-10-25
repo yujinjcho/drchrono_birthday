@@ -6,4 +6,7 @@ AUTH_URI = 'https://drchrono.com/o/authorize/'
 BASE_URL = 'https://drchrono.com/'
 
 # Auth End Points
-
+PATIENTS = 'api/patients'
+APPOINTMENTS = 'api/appointments'
+ALLERGIES = 'api/allergies'
+CURRENT_USER = 'api/users/current'
