@@ -12,18 +12,18 @@ from django.contrib.auth.models import User
 from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
 
-from . import drchrono_config
+from . import config
 
 
 def index(request):
     '''login page for doctor'''
 
     query = {
-        'redirect_uri': drchrono_config.REDIRECT_URI,
+        'redirect_uri': config.REDIRECT_URI,
         'response_type': 'code',
-        'client_id': drchrono_config.CLIENT_ID
+        'client_id': config.CLIENT_ID
     }
-    DRCHRONO_REDIRECT = add_query_to_url(drchrono_config.AUTH_URI, query)
+    DRCHRONO_REDIRECT = add_query_to_url(config.AUTH_URI, query)
 
     return render(
         request,
@@ -39,9 +39,9 @@ def auth_redirect(request):
     response = requests.post('https://drchrono.com/o/token/', data={
         'code': code,
         'grant_type': 'authorization_code',
-        'redirect_uri': drchrono_config.REDIRECT_URI,
-        'client_id': drchrono_config.CLIENT_ID,
-        'client_secret': drchrono_config.CLIENT_SECRET,
+        'redirect_uri': config.REDIRECT_URI,
+        'client_id': config.CLIENT_ID,
+        'client_secret': config.CLIENT_SECRET,
     })
     response.raise_for_status()
     data = response.json()
@@ -347,7 +347,7 @@ def get_patient_data(request):
     first name, last name, and date of birth
     '''
 
-    patient_url = add_path_to_url(drchrono_config.BASE_URL, 'api/patients')
+    patient_url = add_path_to_url(config.BASE_URL, 'api/patients')
     params = {
         'first_name': request.POST.get('first_name'),
         'last_name': request.POST.get('last_name'),
@@ -379,7 +379,7 @@ def handle_api_request(request, verb, end_point, params=None, data=None):
     '''
 
     headers = get_header(request)
-    url = add_path_to_url(drchrono_config.BASE_URL, end_point)
+    url = add_path_to_url(config.BASE_URL, end_point)
 
     if verb == 'get':
         response = requests.get(
