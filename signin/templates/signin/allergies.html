@@ -2,9 +2,9 @@
 <html>
 <head>
   <title>Allgeries</title>
-  <link rel="stylesheet" type"text/css" href="{% static 'signin/css/bootstrap.css' %}" />
+  <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
   <link rel="stylesheet" type"text/css" href="{% static 'signin/css/stylesheet.css' %}" />
-  
+
 </head>
 <body>
 
@@ -15,7 +15,7 @@
             <div class='patient-form-container col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2'>
                 <div id="existing-allergy-container" class="patient-info">
                     <div class='allergy-header'>Existing Allergies</div>
-                    
+
                       {% if not allergies %}
                         <div id="no-allergies">Currently none</div>
                       {% endif %}
@@ -36,15 +36,15 @@
                         <div class="form-group row">
                           <label for="test" class="col-xs-4 col-form-label">Reaction</label>
                           <div class="col-xs-8">
-                              <input class="form-control" type="text" value="{{ a_allergy.reaction }}" id="test" disabled> 
-                              
+                              <input class="form-control" type="text" value="{{ a_allergy.reaction }}" id="test" disabled>
+
                           </div>
                         </div>
 
                         <div class="form-group row">
                           <label for="test" class="col-xs-4 col-form-label">Notes</label>
                           <div class="col-xs-8">
-                              <input class="form-control" type="text" value="{{ a_allergy.notes }}" id="test" disabled> 
+                              <input class="form-control" type="text" value="{{ a_allergy.notes }}" id="test" disabled>
                           </div>
                         </div>
 
@@ -53,7 +53,7 @@
                   </div>
 
                   <div class='allergy-header'>New Allergies?</div>
-                    
+
                       <div class="allergy-item">
 
                         <div class="form-group row">
@@ -71,7 +71,7 @@
                         <div class="form-group row">
                           <label for="test" class="col-xs-4 col-form-label">Notes</label>
                           <div class="col-xs-8">
-                              <input id="notes-to-add" class="form-control" type="text" value="" placeholder="Description" id="test"> 
+                              <input id="notes-to-add" class="form-control" type="text" value="" placeholder="Description" id="test">
                           </div>
                         </div>
 
@@ -79,7 +79,7 @@
                           <button id="add-allergy" class="btn btn-primary btn-lg">Add Allergy</button>
 
                           <button id="exit-checkin" class="btn btn-success btn-lg">Finish Check-in</button>
-                          
+
                         </div>
                       </div>
                   </div>
@@ -98,7 +98,7 @@
     </script>
     <script src="{% static 'signin/js/jquery-3.1.0.min.js' %}"></script>
     <script src="{% static 'signin/js/allergies.js' %}"></script>
-    
+
 
 </body>
 </html>
