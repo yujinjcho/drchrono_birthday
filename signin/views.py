@@ -449,13 +449,6 @@ def get_patient_by_id(request, patient_id):
     return response.json()
 
 
-def get_current_date(datetime_obj):
-    '''Returns todays datetime with only year, month, and day'''
-
-    date_now = datetime_obj
-    return datetime(date_now.year, date_now.month, date_now.day)
-
-
 def convert_time_to_str(s):
     '''Adds AM and PM time format to object'''
 
