@@ -77,17 +77,22 @@ def find_patients(request):
 
 @login_required
 def check_appointments(request):
-    '''find appointments for given patient and current date '''
+    '''redirects to appointments based on id '''
 
     patient_id = request.GET.get('appt_id')
-    appointment_data = get_appointment_data(request, patient_id)
+    return redirect('/signin/appointments/%s' % patient_id)
 
-    # add a given time to a XX:XXAM or XX:XXPM format
+
+@login_required
+def appointments(request, id):
+    '''find appointments for given patient and current date '''
+
+    appointment_data = get_appointment_data(request, id)
     data = transform_appointment_data(appointment_data["results"])
     return render(
         request,
         'signin/appointments.html',
-        {"appointments": data, "patient_id": patient_id}
+        {"appointments": data, "patient_id": id}
     )
 
 

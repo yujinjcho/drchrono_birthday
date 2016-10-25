@@ -28,4 +28,9 @@ urlpatterns = [
     url(r'^exit/$', views.exit, name='exit'),
     url(r'^auth_redirect$', views.auth_redirect, name='auth_redirect'),
     url(r'^exit_page$', views.exit_page, name='exit_page'),
+    url(
+        r'^appointments/(?P<id>[0-9]+)$',
+        views.appointments,
+        name='appointments'
+    ),
 ]
