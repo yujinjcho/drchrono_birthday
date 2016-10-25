@@ -17,7 +17,7 @@
     var allergyItem = document.createElement("div");
 
     allergyItem.className = "allergy-item";
-        
+
     reaction_output = createReaction(reactionsAdd);
     notes_output = createNote(notesAdd)
 
@@ -65,14 +65,14 @@
   }
 
   function createReaction(reactionReason){
-    
+
     var reactionIndex = [reactionReason.selectedIndex];
     var reactionSelect = reactionReason.options[reactionIndex].value;
 
     if (reactionSelect == "") {
       throw "must select a reaction"
     }
-    
+
     var reactionRow = document.createElement("div");
     var reactionLabel = document.createElement("label");
     var reactionInputContainer = document.createElement("div");
@@ -141,7 +141,7 @@
   function getAllergiesSetInactive(){
     var toUpdate = [];
     var arrayLength = existingAllergies.length;
-    
+
     for (var i = 0; i < arrayLength; i++) {
       var currentAllergy = document.getElementById("allergy-".concat(existingAllergies[i]['id']));
       var status = currentAllergy.options[currentAllergy.selectedIndex].value;

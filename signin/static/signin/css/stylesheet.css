@@ -74,6 +74,10 @@ body {
     margin-bottom: 0px;
 }
 
+.apptForm {
+    text-align: center;
+}
+
 /*APPOINTMENTS*/
 .appointment-main-container {
     padding-top: 50px;

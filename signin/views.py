@@ -78,7 +78,8 @@ def find_patients(request):
 @login_required
 def check_appointments(request):
     '''find appointments for given patient and current date '''
-    patient_id = request.GET.get('id')
+
+    patient_id = request.GET.get('appt_id')
     appointment_data = get_appointment_data(request, patient_id)
 
     # add a given time to a XX:XXAM or XX:XXPM format
