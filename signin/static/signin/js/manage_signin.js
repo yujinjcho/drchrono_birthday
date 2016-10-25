@@ -59,25 +59,9 @@
   }
 
   function setAppointmentFinder(data) {
-    var appointmentBtn = document.getElementById('check-appointment-btn');
-    var appointmentHref = appointmentBtn.getAttribute('href');
     var patientId = data.id;
-
-    if (appointmentHref.substr(-1) == '/') {
-      appointmentBtn.setAttribute(
-        'href',
-        appointmentHref.concat('?id=').concat(patientId)
-      );
-    } else {
-      if (appointmentHref.includes(patientId)) {
-        return;
-      } else {
-        appointmentBtn.setAttribute(
-          'href',
-          appointmentHref.substring(0, 27).concat('?id=').concat(patientId)
-        );
-      }
-    }
+    var apptIdBtn = document.getElementById('appointmentId');
+    apptIdBtn.value = patientId;
   };
 
   function findPatient() {
@@ -97,7 +81,6 @@
       },
       function(data) {handlePatientResponse(data);}
     );
-
   };
 
   function main() {
