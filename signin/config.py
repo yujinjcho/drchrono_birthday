@@ -1,7 +1,14 @@
 # OAuth Settings for drchrono
+production = False
+
+if production:
+    REDIRECT_BASE = 'http://127.0.0.1:8000/'
+else:
+    # Change this for production
+    REDIRECT_BASE = 'http://127.0.0.1:8000/'
+
 CLIENT_ID = '30iBbaiSSJO8OUztEGWIs4wykDOlBcEYUKKAnCY9'
 CLIENT_SECRET = 'dZBRtiqou2uTEbP5q395MIBn412XNUP2Ey0hQZ5blmG6Z9qhOffAmKOf52Lg04kPJHQfcFDLsEEVWHefmcWiykYLZmd6hvFXJLuEeoYPOmjaXnmxyHqtERjxr9p8yl2h'
-REDIRECT_URI = 'http://127.0.0.1:8000/signin/auth_redirect'
 BASE_URL = 'https://drchrono.com/'
 
 # End Points
@@ -11,6 +18,7 @@ ALLERGIES = 'api/allergies'
 CURRENT_USER = 'api/users/current'
 TOKEN = 'o/token/'
 AUTH = 'o/authorize/'
+REDIRECT = 'signin/auth_redirect'
 
 # Allergy categories
 allergy_type = [

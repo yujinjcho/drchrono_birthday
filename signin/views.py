@@ -19,7 +19,7 @@ def index(request):
     '''login page for doctor'''
 
     query = {
-        'redirect_uri': config.REDIRECT_URI,
+        'redirect_uri': add_path_to_url(config.REDIRECT_BASE, config.REDIRECT),
         'response_type': 'code',
         'client_id': config.CLIENT_ID
     }
@@ -39,7 +39,7 @@ def auth_redirect(request):
     req_data = {
         'code': request.GET.get('code'),
         'grant_type': 'authorization_code',
-        'redirect_uri': config.REDIRECT_URI,
+        'redirect_uri': add_path_to_url(config.REDIRECT_BASE, config.REDIRECT),
         'client_id': config.CLIENT_ID,
         'client_secret': config.CLIENT_SECRET,
     }
