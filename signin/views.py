@@ -120,7 +120,10 @@ def patient_form(request):
 def patient_form_submit(request):
     ''' handles form submission and updates patient information'''
     data = request.POST.copy()
-    data = format_phone_numbers(data)
+
+    for key, value in data.iteritems():
+        if 'phone' in key:
+            data[key] = format_phone_number(value)
 
     url = add_path_to_url(config.BASE_URL, config.PATIENTS, data['patient_id'])
     response = handle_api_request(
@@ -240,32 +243,6 @@ def add_path_to_url(url, *path):
     return urlparse.urlunparse(url_parts)
 
 
-def format_phone_numbers(data):
-    '''Takes an object and checks if 'phone' is in attribute first_name
-    and if so, tries to put into phone format. If error, just keeps
-    what was initally entered.
-    '''
-    for key, value in data.iteritems():
-        if 'phone' in key:
-
-            try:
-                phone_pattern = format_phone_number(value)
-                phone_text = '(%s) %s-%s' % (
-                    phone_pattern[0],
-                    phone_pattern[1],
-                    phone_pattern[2]
-                )
-
-                if phone_pattern[3]:
-                    phone_text = phone_text + ' x' + phone_pattern[3]
-
-                data[key] = phone_text
-            except BaseException:
-                continue
-
-    return data
-
-
 def format_phone_number(s):
     '''takes a variety of phone formats and returns in
     (XXX) XXX-XXXX format and appends an optional extension
@@ -282,7 +259,21 @@ def format_phone_number(s):
     (\d*)       # extension is optional and can be any number of digits
     $           # end of string
     ''', re.VERBOSE)
-    return phone_pattern.search(s).groups()
+
+    try:
+        phone_num_groups = phone_pattern.search(s).groups()
+        phone_text = '(%s) %s-%s' % (
+            phone_num_groups[0],
+            phone_num_groups[1],
+            phone_num_groups[2]
+        )
+
+        if phone_num_groups[3]:
+            phone_text = phone_text + ' x' + phone_num_groups[3]
+    except AttributeError:
+        return s
+
+    return phone_text
 
 
 def organize_forms():
