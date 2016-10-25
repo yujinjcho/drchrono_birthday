@@ -65,14 +65,17 @@
   };
 
   function findPatient() {
-
     var firstName = document.getElementById('InputFirstName');
     var lastName = document.getElementById('InputLastName');
     var dateOfBirth = document.getElementById('DateofBirth');
     var csrftoken = getCookie('csrftoken');
 
+    var postUrl = document.createElement('A');
+    postUrl.href = window.location.href;
+    postUrl.pathname = '/signin/find_patient/';
+
     $.post(
-      'http://127.0.0.1:8000/signin/find_patient/',
+      postUrl.href,
       {
         'first_name': firstName.value,
         'last_name': lastName.value,
