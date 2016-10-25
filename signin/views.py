@@ -347,22 +347,21 @@ def get_patient_data(request):
     first name, last name, and date of birth
     '''
 
-    patient_url = add_path_to_url(config.BASE_URL, 'api/patients')
+    patient_url = add_path_to_url(config.BASE_URL, config.PATIENTS)
     params = {
         'first_name': request.POST.get('first_name'),
         'last_name': request.POST.get('last_name'),
         'date_of_birth': request.POST.get('date_of_birth')
     }
-
-    headers = {
-        'Authorization': 'Bearer %s' % request.session['access_token'],
-    }
-
     patients = []
 
-
     while patient_url:
-        data = requests.get(patient_url, params=params, headers=headers).json()
+        data = handle_api_request(
+            request,
+            'get',
+            patient_url,
+            params=params
+        ).json()
         patients.extend(data['results'])
 
         # A JSON null on the last page
@@ -406,18 +405,6 @@ def get_patient_by_id(request, patient_id):
         'get',
         url_w_id
     )
-
-    '''
-    headers = {
-        'Authorization': 'Bearer %s' % request.session['access_token'],
-    }
-    patients_url = 'https://drchrono.com/api/patients'
-    data = requests.get(patients_url, headers=headers).json()
-    all_patients = data['results']
-    patient = [patient for patient in all_patients if patient['id'] == int(patient_id)]
-    return patient[0]
-    '''
-
     return response.json()
 
 
