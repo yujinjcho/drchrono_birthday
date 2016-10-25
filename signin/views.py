@@ -291,16 +291,14 @@ def transform_appointment_data(data):
     return data
 
 
-def get_user_data(access_token):
+def get_user_data(request):
     '''Returns user(doctor's) information '''
 
-    response = requests.get(
-        'https://drchrono.com/api/users/current',
-        headers={
-            'Authorization': 'Bearer %s' % access_token,
-        }
+    response = handle_api_request(
+        request,
+        'get',
+        'api/users/current',
     )
-    response.raise_for_status()
     data = response.json()
     return data
 
@@ -332,7 +330,7 @@ def handle_user(request, access_token):
     if they don't exist.
      '''
 
-    user_data = get_user_data(access_token)
+    user_data = get_user_data(request)
     user_query = User.objects.filter(username=user_data['id'])
 
     if not user_query:
