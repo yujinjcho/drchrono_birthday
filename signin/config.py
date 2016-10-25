@@ -1,14 +1,18 @@
-# OAuth Settings for drchrono
-production = False
+import os
 
-if production:
+# OAuth Settings for drchrono
+development_mode = os.environ.get('DEVELOPMENT_MODE', 'False')
+
+if development_mode == 'True':
     REDIRECT_BASE = 'http://127.0.0.1:8000/'
+    CLIENT_ID = os.environ.get('CLIENT_ID', '')
+    CLIENT_SECRET = os.environ.get('CLIENT_SECRET', '')
 else:
     # Change this for production
-    REDIRECT_BASE = 'http://127.0.0.1:8000/'
+    REDIRECT_BASE = ''
+    CLIENT_ID = ''
+    CLIENT_SECRET = ''
 
-CLIENT_ID = '30iBbaiSSJO8OUztEGWIs4wykDOlBcEYUKKAnCY9'
-CLIENT_SECRET = 'dZBRtiqou2uTEbP5q395MIBn412XNUP2Ey0hQZ5blmG6Z9qhOffAmKOf52Lg04kPJHQfcFDLsEEVWHefmcWiykYLZmd6hvFXJLuEeoYPOmjaXnmxyHqtERjxr9p8yl2h'
 BASE_URL = 'https://drchrono.com/'
 
 # End Points
