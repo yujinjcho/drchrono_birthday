@@ -35,15 +35,19 @@ def index(request):
 def auth_redirect(request):
     '''directs user to auth server login'''
 
-    code = request.GET.get('code')
-    response = requests.post('https://drchrono.com/o/token/', data={
-        'code': code,
+    req_data = {
+        'code': request.GET.get('code'),
         'grant_type': 'authorization_code',
         'redirect_uri': config.REDIRECT_URI,
         'client_id': config.CLIENT_ID,
         'client_secret': config.CLIENT_SECRET,
-    })
-    response.raise_for_status()
+    }
+    response = handle_api_request(
+        request=request,
+        verb='post',
+        url=add_path_to_url(config.BASE_URL, config.TOKEN),
+        data = req_data
+    )
     data = response.json()
     request.session['access_token'] = data['access_token']
     handle_user(request, data['access_token'])
@@ -387,6 +391,12 @@ def handle_api_request(request, verb, url, params=None, data=None):
         )
     elif verb == 'patch':
         response = requests.patch(
+            url,
+            data=data,
+            headers=headers
+        )
+    elif verb == 'post':
+        response = requests.post(
             url,
             data=data,
             headers=headers
