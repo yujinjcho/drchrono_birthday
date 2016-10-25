@@ -1,4 +1,4 @@
-(function () {
+(function() {
 
   function addAllergyListen() {
     var addAllergyBtn = document.getElementById('add-allergy');
@@ -13,20 +13,22 @@
 
     var reactionsAdd = document.getElementById('reaction-to-add');
     var notesAdd = document.getElementById('notes-to-add');
-    var allergyContainer = document.getElementById('existing-allergy-container');
+    var allergyContainer = document.getElementById(
+      'existing-allergy-container'
+    );
     var allergyItem = document.createElement('div');
 
     allergyItem.className = 'allergy-item';
 
-    reaction_output = createReaction(reactionsAdd);
-    notes_output = createNote(notesAdd);
+    reactionOutput = createReaction(reactionsAdd);
+    notesOutput = createNote(notesAdd);
 
     allergyItem.appendChild(createStatus());
-    allergyItem.appendChild(reaction_output[0]);
-    allergyItem.appendChild(notes_output[0]);
+    allergyItem.appendChild(reactionOutput[0]);
+    allergyItem.appendChild(notesOutput[0]);
 
     allergyContainer.appendChild(allergyItem);
-    createNewAllergy(patient_id, reaction_output[1], notes_output[1]);
+    createNewAllergy(patientId, reactionOutput[1], notesOutput[1]);
   };
 
   function createNote(notes) {
@@ -55,27 +57,27 @@
     inputElem.setAttribute('class', className);
     inputElem.setAttribute('id', idName);
     inputElem.setAttribute('type', type);
-    inputElem.value = val
+    inputElem.value = val;
     inputElem.disabled = disabled;
 
     return inputElem;
   };
 
   function createStatus() {
-    var statusRow = document.createElement("div");
-    var statusLabel = document.createElement("label");
-    var statusInputContainer = document.createElement("div");
+    var statusRow = document.createElement('div');
+    var statusLabel = document.createElement('label');
+    var statusInputContainer = document.createElement('div');
 
-    statusRow.className = "form-group row";
-    statusLabel.className = "col-xs-4 col-form-label";
+    statusRow.className = 'form-group row';
+    statusLabel.className = 'col-xs-4 col-form-label';
     statusLabel.innerHTML = 'Status';
-    statusInputContainer.className = "col-xs-8";
+    statusInputContainer.className = 'col-xs-8';
     statusInputContainer.appendChild(createStatusDropdown());
 
     statusRow.appendChild(statusLabel);
     statusRow.appendChild(statusInputContainer);
 
-    return statusRow
+    return statusRow;
   };
 
   function createStatusDropdown() {
@@ -105,7 +107,7 @@
     var reactionSelect = reactionReason.options[reactionIndex].value;
 
     if (reactionSelect == '') {
-      throw 'must select a reaction'
+      throw 'must select a reaction';
     }
 
     var reactionRow = document.createElement('div');
@@ -125,18 +127,18 @@
     return [reactionRow, reactionSelect];
   }
 
-  function createNewAllergy(patient_id, reaction, notes) {
+  function createNewAllergy(patientId, reaction, notes) {
     newAllergy = {
-      'patient_id':patient_id,
-      'reaction':reaction,
-      'notes':notes
+      'patient_id': patientId,
+      'reaction': reaction,
+      'notes': notes
     };
     newAllergies.push(newAllergy);
   };
 
   function updateAllergyListen() {
     var exitBtn = document.getElementById('exit-checkin');
-    exitBtn.addEventListener("click", updateAllergies);
+    exitBtn.addEventListener('click', updateAllergies);
   };
 
   function getCookie(name) {
@@ -160,16 +162,16 @@
     var toSetInactive = getAllergiesSetInactive();
 
     postData = {'csrfmiddlewaretoken': csrftoken};
-    postData['new_allergies'] = JSON.stringify(newAllergies);
-    postData['set_inactive'] = toSetInactive;
-    postData['appointment_id'] = appointmentId;
+    postData.new_allergies = JSON.stringify(newAllergies);
+    postData.set_inactive = toSetInactive;
+    postData.appointment_id = appointmentId;
 
     $.ajax({
       type: 'POST',
       url: 'http://127.0.0.1:8000/signin/update_allergies/',
       data: postData,
-      success: function(data){ window.location = exit_url },
-      error: function(XMLHttpRequst, textStatus, errorThrown){
+      success: function(data) { window.location = exitUrl; },
+      error: function(XMLHttpRequst, textStatus, errorThrown) {
         alert('There are some errors with your input, please fix them.');
       }
     });
@@ -180,10 +182,12 @@
     var arrayLength = existingAllergies.length;
 
     for (var i = 0; i < arrayLength; i++) {
-      var currentAllergy = document.getElementById('allergy-'.concat(existingAllergies[i]['id']));
+      var currentAllergy = document.getElementById(
+        'allergy-'.concat(existingAllergies[i].id)
+      );
       var status = currentAllergy.options[currentAllergy.selectedIndex].value;
       if (status == 'inactive') {
-        toUpdate.push(existingAllergies[i]['id'].toString());
+        toUpdate.push(existingAllergies[i].id.toString());
       }
     };
 

@@ -89,11 +89,11 @@
 
     <script type="text/javascript">
       var newAllergies = [];
-      var patient_id = '{{ patient_id }}';
+      var patientId = '{{ patient_id }}';
       var allergiesSetInactive = [];
       var existingAllergies = {{ allergies_json|safe }};
       var appointmentId = "{{ appt_id }}";
-      var exit_url = "{% url 'signin:exit' %}?appt_id={{ appt_id }}"
+      var exitUrl = "{% url 'signin:exit' %}?appt_id={{ appt_id }}"
 
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
