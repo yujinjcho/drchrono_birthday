@@ -138,13 +138,6 @@ def allergies(request):
     patient = request.GET.get('patient')
     appt_id = request.GET.get('appt_id')
 
-    '''
-    response = requests.get(
-        'https://drchrono.com/api/allergies',
-        params={'patient': patient},
-        headers=get_header(request)
-    )
-    '''
     response = handle_api_request(
         request=request,
         verb='get',
@@ -176,7 +169,7 @@ def update_allergies(request):
     current appointment notes.
     '''
     data = request.POST.copy()
-    url = 'https://drchrono.com/api/appointments/%s' % data['appointment_id']
+
     allergies_now_inactive = request.POST.getlist('set_inactive[]')
     new_allergies = json.loads(request.POST.get('new_allergies', ""))
     new_allergies_text = '. '.join([allergy['reaction'] + ": " + allergy['notes'] for allergy in new_allergies])
@@ -189,9 +182,15 @@ def update_allergies(request):
     if new_allergies:
         updated_note = updated_note + new_allergies_text
 
-    patch_data = {'notes': updated_note}
-    r = requests.patch(url, data=patch_data, headers=get_header(request))
-    r.raise_for_status()
+    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS)
+    url_w_id = add_path_to_url(url, data['appointment_id'])
+
+    response = handle_api_request(
+        request=request,
+        verb='patch',
+        url=url_w_id,
+        data={'notes': updated_note}
+    )
     return HttpResponse(str(len(new_allergies)))
 
 
@@ -202,12 +201,14 @@ def exit(request):
     '''
     appt_id = request.GET.get('appt_id')
 
-    response = requests.patch(
-        'https://drchrono.com/api/appointments/' + appt_id,
-        data={'status': 'Arrived'},
-        headers=get_header(request)
+    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS)
+    url_w_id = add_path_to_url(url, appt_id)
+    response = handle_api_request(
+        request=request,
+        verb='patch',
+        url=url_w_id,
+        data={'status': 'Arrived'}
     )
-    response.raise_for_status()
     return render(
         request,
         'signin/exit.html'
@@ -390,9 +391,9 @@ def get_patient_data(request):
 def handle_api_request(request, verb, url, params=None, data=None):
     '''handles api request and returns response
 
-    :param str verb: accepts 'patch' and 'get'
+    :param str verb: accepts 'get', 'patch', and 'post'
     :param str url: url for endpoint
-    :param dict data: data for 'patch' requests
+    :param dict data: data for 'patch' and 'post' requests
     '''
 
     headers = get_header(request)
