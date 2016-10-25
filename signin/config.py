@@ -52,3 +52,30 @@ reaction = [
     'Sore throat',
     'Swelling'
 ]
+
+# patient_form categories
+general = [
+    'first_name',
+    'last_name',
+    'middle_name'
+]
+location = ['address', 'city', 'state', 'zip_code']
+employer = [
+    'employer',
+    'employer_address',
+    'employer_city',
+    'employer_state',
+    'employer_zip_code'
+]
+contact = [
+    'cell_phone',
+    'home_phone',
+    'email',
+    'emergency_contact_name',
+    'emergency_contact_phone',
+    'emergency_contact_relation',
+    'responsible_party_name',
+    'responsible_party_relation',
+    'responsible_party_phone',
+    'responsible_party_email'
+]

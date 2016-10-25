@@ -261,7 +261,11 @@ def format_phone_number(s):
     ''', re.VERBOSE)
 
     try:
+        if not phone_pattern.search(s):
+            raise PhoneError("Inputted string didn't match")
+
         phone_num_groups = phone_pattern.search(s).groups()
+
         phone_text = '(%s) %s-%s' % (
             phone_num_groups[0],
             phone_num_groups[1],
@@ -270,41 +274,18 @@ def format_phone_number(s):
 
         if phone_num_groups[3]:
             phone_text = phone_text + ' x' + phone_num_groups[3]
-    except AttributeError:
+    except PhoneError:
         return s
 
     return phone_text
 
+class PhoneError(Exception):
+    pass
 
 def organize_forms():
     '''Returns patient fields in selected groupings'''
-    general = [
-        'first_name',
-        'last_name',
-        'middle_name'
-    ]
-    location = ['address', 'city', 'state', 'zip_code']
-    employer = [
-        'employer',
-        'employer_address',
-        'employer_city',
-        'employer_state',
-        'employer_zip_code'
-    ]
-    contact = [
-        'cell_phone',
-        'home_phone',
-        'email',
-        'emergency_contact_name',
-        'emergency_contact_phone',
-        'emergency_contact_relation',
-        'responsible_party_name',
-        'responsible_party_relation',
-        'responsible_party_phone',
-        'responsible_party_email'
-    ]
 
-    return general, location, employer, contact
+    return config.general, config.location, config.employer, config.contact
 
 
 def transform_appointment_data(data):
