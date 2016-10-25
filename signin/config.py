@@ -11,3 +11,33 @@ ALLERGIES = 'api/allergies'
 CURRENT_USER = 'api/users/current'
 TOKEN = 'o/token/'
 AUTH = 'o/authorize/'
+
+
+# Allergy categories
+allergy_type = [
+    'Specific Drug allergy',
+    'Drug Class allergy',
+    'Non-Drug allergy',
+    'No Known Drug Allergies (NKA)'
+]
+
+reaction = [
+    'Acute kidney failure',
+    'Arthralgia',
+    'Chills',
+    'Cough',
+    'Fever',
+    'Headache',
+    'Hives',
+    'Malaise/fatigue',
+    'Myalgia',
+    'Nasal congestion',
+    'Nasuea',
+    'Pain/soreness at injection site',
+    'Rash',
+    'Respiratory distress',
+    'Rhinorrhea',
+    'Shortness of breath/difficulty breathing',
+    'Sore throat',
+    'Swelling'
+]
