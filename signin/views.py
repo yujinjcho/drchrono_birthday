@@ -23,7 +23,8 @@ def index(request):
         'response_type': 'code',
         'client_id': config.CLIENT_ID
     }
-    DRCHRONO_REDIRECT = add_query_to_url(config.AUTH_URI, query)
+    url = add_path_to_url(config.BASE_URL, config.AUTH)
+    DRCHRONO_REDIRECT = add_query_to_url(url, query)
 
     return render(
         request,
@@ -42,11 +43,12 @@ def auth_redirect(request):
         'client_id': config.CLIENT_ID,
         'client_secret': config.CLIENT_SECRET,
     }
-    response = handle_api_request(
-        request=request,
-        verb='post',
-        url=add_path_to_url(config.BASE_URL, config.TOKEN),
-        data = req_data
+
+    # Not using handle_api_request because we don't use
+    # headers (access token) for this request
+    response = requests.post(
+        add_path_to_url(config.BASE_URL, config.TOKEN),
+        data=req_data
     )
     data = response.json()
     request.session['access_token'] = data['access_token']
