@@ -4,7 +4,7 @@ CLIENT_SECRET = 'dZBRtiqou2uTEbP5q395MIBn412XNUP2Ey0hQZ5blmG6Z9qhOffAmKOf52Lg04k
 REDIRECT_URI = 'http://127.0.0.1:8000/signin/auth_redirect'
 BASE_URL = 'https://drchrono.com/'
 
-# Auth End Points
+# End Points
 PATIENTS = 'api/patients'
 APPOINTMENTS = 'api/appointments'
 ALLERGIES = 'api/allergies'

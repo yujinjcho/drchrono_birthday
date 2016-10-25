@@ -122,12 +122,11 @@ def patient_form_submit(request):
     data = request.POST.copy()
     data = format_phone_numbers(data)
 
-    url = add_path_to_url(config.BASE_URL, config.PATIENTS)
-    url_w_id = add_path_to_url(url, data['patient_id'])
+    url = add_path_to_url(config.BASE_URL, config.PATIENTS, data['patient_id'])
     response = handle_api_request(
         request=request,
         verb='patch',
-        url=url_w_id,
+        url=url,
         data=data
     )
     return HttpResponse('success')
@@ -184,13 +183,12 @@ def update_allergies(request):
     if new_allergies:
         updated_note = updated_note + new_allergies_text
 
-    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS)
-    url_w_id = add_path_to_url(url, data['appointment_id'])
+    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS, data['appointment_id'])
 
     response = handle_api_request(
         request=request,
         verb='patch',
-        url=url_w_id,
+        url=url,
         data={'notes': updated_note}
     )
     return HttpResponse(str(len(new_allergies)))
@@ -203,12 +201,11 @@ def exit(request):
     '''
     appt_id = request.GET.get('appt_id')
 
-    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS)
-    url_w_id = add_path_to_url(url, appt_id)
+    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS, appt_id)
     response = handle_api_request(
         request=request,
         verb='patch',
-        url=url_w_id,
+        url=url,
         data={'status': 'Arrived'}
     )
     return render(
@@ -224,11 +221,11 @@ def add_query_to_url(url, query):
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
 
-def add_path_to_url(url, path):
+def add_path_to_url(url, *path):
     '''accepts url and path and returns encoded url'''
 
     url_parts = list(urlparse.urlparse(url))
-    url_parts[2] = url_parts[2] + '/' + path
+    url_parts[2] = url_parts[2] + '/'.join([end for end in path])
     return urlparse.urlunparse(url_parts)
 
 
@@ -425,12 +422,11 @@ def handle_api_request(request, verb, url, params=None, data=None):
 
 def get_patient_by_id(request, patient_id):
     '''Returns patient by id '''
-    url = add_path_to_url(config.BASE_URL, config.PATIENTS)
-    url_w_id = add_path_to_url(url, patient_id)
+    url = add_path_to_url(config.BASE_URL, config.PATIENTS, patient_id)
     response = handle_api_request(
         request=request,
         verb='get',
-        url=url_w_id
+        url=url
     )
     return response.json()
 
