@@ -209,8 +209,8 @@ def update_allergies(request):
 
 @login_required
 def exit(request):
-    '''takes patient to exit page and changes status to 'Arrived'
-    for the given appointment
+    '''Changes patient status to 'Arrived' and redirects to
+    exit page
     '''
     appt_id = request.GET.get('appt_id')
 
@@ -221,11 +221,17 @@ def exit(request):
         url=url,
         data={'status': 'Arrived'}
     )
+
+    return redirect('signin:exit_page')
+
     return render(
         request,
         'signin/exit.html'
     )
 
+def exit_page(request):
+    '''testing new exit page'''
+    return render(request, 'signin/exit.html')
 
 # helper functions
 def add_query_to_url(url, query):

@@ -223,3 +223,7 @@ body {
 .no-allergies-hide {
     display: none;
 }
+
+.allergiesForm {
+    display: none;
+}

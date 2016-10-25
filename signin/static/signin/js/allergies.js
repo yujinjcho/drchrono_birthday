@@ -166,11 +166,15 @@
     postData.set_inactive = toSetInactive;
     postData.appointment_id = appointmentId;
 
+    var postUrl = document.createElement('A');
+    postUrl.href = window.location.href;
+    postUrl.pathname = '/signin/update_allergies/';
+
     $.ajax({
       type: 'POST',
-      url: 'http://127.0.0.1:8000/signin/update_allergies/',
+      url: postUrl.href,
       data: postData,
-      success: function(data) { window.location = exitUrl; },
+      success: function(data) { document.allergiesForm.submit(); },
       error: function(XMLHttpRequst, textStatus, errorThrown) {
         alert('There are some errors with your input, please fix them.');
       }
