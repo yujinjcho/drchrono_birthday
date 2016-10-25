@@ -173,17 +173,26 @@ def update_allergies(request):
 
     allergies_now_inactive = request.POST.getlist('set_inactive[]')
     new_allergies = json.loads(request.POST.get('new_allergies', ""))
-    new_allergies_text = '. '.join([allergy['reaction'] + ": " + allergy['notes'] for allergy in new_allergies])
+    new_allergies_list = [
+        allergy['reaction'] + ": " + allergy['notes']
+        for allergy in new_allergies
+    ]
+    new_allergies_text = '. '.join(new_allergies_list)
 
     if allergies_now_inactive:
-        updated_note = 'Inactive Allergies: ' + ', '.join(allergies_now_inactive) + '. '
+        inactive_allergies = ', '.join(allergies_now_inactive)
+        updated_note = 'Inactive Allergies: %s. ' % inactive_allergies
     else:
         updated_note = ""
 
     if new_allergies:
         updated_note = updated_note + new_allergies_text
 
-    url = add_path_to_url(config.BASE_URL, config.APPOINTMENTS, data['appointment_id'])
+    url = add_path_to_url(
+        config.BASE_URL,
+        config.APPOINTMENTS,
+        data['appointment_id']
+    )
 
     response = handle_api_request(
         request=request,
@@ -213,6 +222,7 @@ def exit(request):
         'signin/exit.html'
     )
 
+
 # helper functions
 def add_query_to_url(url, query):
     '''accepts url and dict and returns encoded url'''
@@ -220,6 +230,7 @@ def add_query_to_url(url, query):
     url_parts = list(urlparse.urlparse(url))
     url_parts[4] = urlencode(query)
     return urlparse.urlunparse(url_parts)
+
 
 def add_path_to_url(url, *path):
     '''accepts url and path and returns encoded url'''
@@ -239,7 +250,11 @@ def format_phone_numbers(data):
 
             try:
                 phone_pattern = format_phone_number(value)
-                phone_text = '(%s) %s-%s' % (phone_pattern[0], phone_pattern[1], phone_pattern[2])
+                phone_text = '(%s) %s-%s' % (
+                    phone_pattern[0],
+                    phone_pattern[1],
+                    phone_pattern[2]
+                )
 
                 if phone_pattern[3]:
                     phone_text = phone_text + ' x' + phone_pattern[3]
@@ -304,7 +319,9 @@ def organize_forms():
 def transform_appointment_data(data):
     '''Adds AM and PM time format to each object '''
     for appointment in data:
-        appointment['start_time'] = convert_time_to_str(appointment['scheduled_time'])
+        appointment['start_time'] = convert_time_to_str(
+            appointment['scheduled_time']
+        )
 
     return data
 
@@ -387,6 +404,7 @@ def get_patient_data(request):
 
     return patients
 
+
 def handle_api_request(request, verb, url, params=None, data=None):
     '''handles api request and returns response
 
@@ -431,7 +449,6 @@ def get_patient_by_id(request, patient_id):
     return response.json()
 
 
-
 def get_current_date(datetime_obj):
     '''Returns todays datetime with only year, month, and day'''
 
@@ -471,33 +488,4 @@ def convert_to_title(str):
 
 def get_allergy_categories():
     '''return allergy categories and reactions'''
-
-    allergy_type = [
-        'Specific Drug allergy',
-        'Drug Class allergy',
-        'Non-Drug allergy',
-        'No Known Drug Allergies (NKA)'
-    ]
-
-    reaction = [
-        'Acute kidney failure',
-        'Arthralgia',
-        'Chills',
-        'Cough',
-        'Fever',
-        'Headache',
-        'Hives',
-        'Malaise/fatigue',
-        'Myalgia',
-        'Nasal congestion',
-        'Nasuea',
-        'Pain/soreness at injection site',
-        'Rash',
-        'Respiratory distress',
-        'Rhinorrhea',
-        'Shortness of breath/difficulty breathing',
-        'Sore throat',
-        'Swelling'
-    ]
-
-    return allergy_type, reaction
+    return config.allergy_type, config.reaction
