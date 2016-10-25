@@ -297,8 +297,7 @@ def get_user_data(request):
     response = handle_api_request(
         request,
         'get',
-        #'api/users/current',
-        config.CURRENT_USER
+        add_path_to_url(config.BASE_URL, config.CURRENT_USER)
     )
     data = response.json()
     return data
@@ -318,8 +317,7 @@ def get_appointment_data(request, patient_id):
     response = handle_api_request(
         request,
         'get',
-        #'/api/appointments',
-        config.APPOINTMENTS,
+        add_path_to_url(config.BASE_URL, config.APPOINTMENTS),
         params=params
     )
 
@@ -372,16 +370,15 @@ def get_patient_data(request):
 
     return patients
 
-def handle_api_request(request, verb, end_point, params=None, data=None):
+def handle_api_request(request, verb, url, params=None, data=None):
     '''handles api request and returns response
 
     :param str verb: accepts 'patch' and 'get'
-    :param str end_point: api endpoint e.g. '/api/patients'
+    :param str url: url for endpoint
     :param dict data: data for 'patch' requests
     '''
 
     headers = get_header(request)
-    url = add_path_to_url(config.BASE_URL, end_point)
 
     if verb == 'get':
         response = requests.get(
