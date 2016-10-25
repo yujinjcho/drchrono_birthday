@@ -119,9 +119,15 @@ def patient_form_submit(request):
     ''' handles form submission and updates patient information'''
     data = request.POST.copy()
     data = format_phone_numbers(data)
-    url = 'https://drchrono.com/api/patients/' + data['patient_id']
-    r = requests.patch(url, data=data, headers=get_header(request))
-    r.raise_for_status()
+
+    url = add_path_to_url(config.BASE_URL, config.PATIENTS)
+    url_w_id = add_path_to_url(url, data['patient_id'])
+    response = handle_api_request(
+        request=request,
+        verb='patch',
+        url=url_w_id,
+        data=data
+    )
     return HttpResponse('success')
 
 
@@ -132,10 +138,18 @@ def allergies(request):
     patient = request.GET.get('patient')
     appt_id = request.GET.get('appt_id')
 
+    '''
     response = requests.get(
         'https://drchrono.com/api/allergies',
         params={'patient': patient},
         headers=get_header(request)
+    )
+    '''
+    response = handle_api_request(
+        request=request,
+        verb='get',
+        url=add_path_to_url(config.BASE_URL, config.ALLERGIES),
+        params={'patient': patient}
     )
 
     response.raise_for_status()
@@ -299,9 +313,9 @@ def get_user_data(request):
     '''Returns user(doctor's) information '''
 
     response = handle_api_request(
-        request,
-        'get',
-        add_path_to_url(config.BASE_URL, config.CURRENT_USER)
+        request=request,
+        verb='get',
+        url=add_path_to_url(config.BASE_URL, config.CURRENT_USER)
     )
     data = response.json()
     return data
@@ -319,9 +333,9 @@ def get_appointment_data(request, patient_id):
         'patient': patient_id
     }
     response = handle_api_request(
-        request,
-        'get',
-        add_path_to_url(config.BASE_URL, config.APPOINTMENTS),
+        request=request,
+        verb='get',
+        url=add_path_to_url(config.BASE_URL, config.APPOINTMENTS),
         params=params
     )
 
@@ -361,9 +375,9 @@ def get_patient_data(request):
 
     while patient_url:
         data = handle_api_request(
-            request,
-            'get',
-            patient_url,
+            request=request,
+            verb='get',
+            url=patient_url,
             params=params
         ).json()
         patients.extend(data['results'])
@@ -411,9 +425,9 @@ def get_patient_by_id(request, patient_id):
     url = add_path_to_url(config.BASE_URL, config.PATIENTS)
     url_w_id = add_path_to_url(url, patient_id)
     response = handle_api_request(
-        request,
-        'get',
-        url_w_id
+        request=request,
+        verb='get',
+        url=url_w_id
     )
     return response.json()
 
