@@ -68,16 +68,23 @@
 
             <div class="form-submit-container">
               <button id="form-submit" class="btn btn-primary btn-lg patient-form-submit">Submit</button>
+
+              <form class="patientForm" action="{% url 'signin:allergies' %}" name="patientForm" method="get">
+                  {% csrf_token %}
+                  <input type="hidden" name="patient" value="{{patient.id}}">
+                  <input type="hidden" name="appt_id" value="{{ appt_id }}">
+                  <input name='patientFormSubmit' type="submit" class="btn btn-success btn-lg" value="Finish Check-in">
+              </form>
             </div>
         </div>
     </div>
 
     <script type="text/javascript">
       var data = {{ json_data|safe }};
-      var patient_id = {{patient.id}};
-      var doctor_id = {{patient.doctor}};
+      var patientId = {{patient.id}};
+      var doctorId = {{patient.doctor}};
       var patient_data = {{ patient_json|safe }};
-      var exit_url = "{% url 'signin:allergies' %}?patient=".concat(patient_id).concat("&appt_id=").concat("{{ appt_id }}");
+      //var exit_url = "{% url 'signin:allergies' %}?patient=".concat(patient_id).concat("&appt_id=").concat("{{ appt_id }}");
 
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
