@@ -5,6 +5,7 @@ from datetime import datetime
 from urllib import urlencode
 import urlparse
 
+from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
@@ -80,7 +81,7 @@ def check_appointments(request):
     '''redirects to appointments based on id '''
 
     patient_id = request.GET.get('appt_id')
-    return redirect('/signin/appointments/%s' % patient_id)
+    return redirect('signin:appointments', id=patient_id)
 
 
 @login_required

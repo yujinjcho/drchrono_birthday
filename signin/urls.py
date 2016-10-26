@@ -29,7 +29,7 @@ urlpatterns = [
     url(r'^auth_redirect$', views.auth_redirect, name='auth_redirect'),
     url(r'^exit_page$', views.exit_page, name='exit_page'),
     url(
-        r'^appointments/(?P<id>[0-9]+)$',
+        r'^appointments/(?P<id>\d+?)$',
         views.appointments,
         name='appointments'
     ),
