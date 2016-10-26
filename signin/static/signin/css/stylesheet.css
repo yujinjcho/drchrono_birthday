@@ -14,17 +14,17 @@ body {
     width: 150px;
 }
 
-#drchrono_logo {
+.drchrono_logo {
     height: 50px;
     margin-bottom: 10px;
 }
 
 /*PATIENT SIGNIN*/
 .id-container {
+    border: 1px solid #212c26;
     border: 1px solid rgba(150,150,150,.8);
-    padding-left: 0px;
-    padding-right: 0px;
     background: white;
+
 }
 
 .search-container {
@@ -58,6 +58,7 @@ body {
 .profile-pic {
     height: 110px;
     max-width: 100%;
+    border: 1px solid #191c17;
     border: 1px solid rgba(100,100,100,.5);
     margin-top: 5px;
 }
@@ -70,12 +71,23 @@ body {
     width: 200px;
 }
 
-#patient-not-found-alert {
-    margin-bottom: 0px;
-}
-
 .apptForm {
     text-align: center;
+}
+
+#patient-found-alert {
+    border: 1px solid #3d3029;
+    border: 1px solid rgba(200,200,200,.8);
+    border-bottom: none;
+    border-top: none;
+    background: white;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 10px;
+}
+
+.alert {
+    margin-bottom: 0px;
 }
 
 /*APPOINTMENTS*/
@@ -88,7 +100,8 @@ body {
 }
 
 .list-group-item {
-    border: 1px solid rgba(150,150,150, .7);
+    border: 1px solid #212c26;
+    border: 1px solid rgba(150,150,150,.8);
 }
 
 /*PATIENT FORM*/
@@ -97,16 +110,12 @@ body {
 }
 
 .patient-form-container {
+    border: 1px solid #3d3029;
     border: 1px solid rgba(200,200,200,.8);
     background: white;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
-    margin-bottom: 20px;
-
+    margin-right: 10%;
+    margin-left: 10%;
 }
-
 
 .subsection-header {
     margin-bottom: 30px;
@@ -135,17 +144,6 @@ body {
     text-align: center;
 }
 
-#patient-found-alert {
-    border: 1px solid rgba(200,200,200,.8);
-    border-bottom: none;
-    border-top: none;
-    background: white;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-bottom: 0px;
-    margin-bottom: 10px;
-}
-
 .search-results {
     width: 100%;
     text-align: center;
@@ -162,7 +160,6 @@ body {
 /*Allergies*/
 
 .allergy-header {
-    margin-bottom: 0px;
     text-align: center;
     line-height: 50px;
     background: #696f7d;
@@ -170,17 +167,12 @@ body {
     height: 50px;
     font-size: 20px;
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-
 }
 
 .allergy-item {
-    border-bottom: 1px solid rgba(180,180,180,.8);
-    padding-top: 25px;
-    padding-bottom: 10px;
-    padding-left: 15px;
-    padding-right: 15px;
-    /*border: 1px solid black;*/
-
+    border-bottom: 1px solid #212c26;
+    border-bottom: 1px solid rgba(150,150,150,.8);
+    padding: 25px 15px 10px 15px;
 }
 
 #add-allergy {
@@ -194,12 +186,9 @@ body {
 }
 
 .allergy-form-container {
+    border: 1px solid #3d3029;
     border: 1px solid rgba(200,200,200,.8);
     background: white;
-    padding-left: 0px;
-    padding-right: 0px;
-    padding-top: 0px;
-    margin-top: 0px;
 }
 
 .add-btn-container {

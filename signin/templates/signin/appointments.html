@@ -3,14 +3,14 @@
 <head>
   <title>Appointments</title>
   <link rel="stylesheet" type"text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-  <link rel="stylesheet" type"text/css" href="{% static 'signin/css/stylesheet.css' %}" />
+  <link rel="stylesheet" type"text/css" href="{% static 'signin/css/appointments.css' %}" />
 
 </head>
 <body>
 
     <div class="appointment-main-container col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1">
 
-        <h1 class="patient-header">Appointments</h1>
+        <h1 class="page-header">Appointments</h1>
 
         <div class="appointment-list col-lg-8 col-lg-offset-2">
           {% for appointment in appointments %}

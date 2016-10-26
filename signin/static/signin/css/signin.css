@@ -1,0 +1,89 @@
+body {
+    background: #f5f5f5;
+}
+
+.id-container {
+    border: 1px solid #212c26;
+    border: 1px solid rgba(150,150,150,.8);
+    background: white;
+
+}
+
+.search-container {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.patient-signin-container {
+    margin-bottom: 40px;
+
+}
+
+.subsection-header {
+    margin-bottom: 30px;
+    text-align: center;
+    line-height: 50px;
+    background: #696f7d;
+    color: white;
+    height: 50px;
+    font-size: 20px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.patient-main-container {
+    margin-top: 40px;
+}
+
+#patient-signin-btn {
+    width: 200px;
+    margin-bottom: 15px;
+}
+
+.patient-alert {
+    display: none;
+}
+
+.profile-pic {
+    height: 110px;
+    max-width: 100%;
+    border: 1px solid #191c17;
+    border: 1px solid rgba(100,100,100,.5);
+    margin-top: 5px;
+}
+
+#patient-info {
+    text-align: center;
+}
+
+#create-patient-btn {
+    width: 200px;
+}
+
+.apptForm {
+    text-align: center;
+}
+
+#patient-found-alert {
+    border: 1px solid #3d3029;
+    border: 1px solid rgba(200,200,200,.8);
+    border-bottom: none;
+    border-top: none;
+    background: white;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-bottom: 10px;
+}
+
+.alert {
+    margin-bottom: 0px;
+}
+
+.btn-container {
+    width: 100%;
+    text-align: center;
+}
