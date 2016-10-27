@@ -361,7 +361,7 @@ def handle_user(request, access_token):
         profile = Profile(user=user, drchrono_id=str(user_data['id']))
         profile.save()
     else:
-        current_profile = profile_query.pop()
+        current_profile = profile_query[0]
         user = current_profile.user
 
     login(request, user)
