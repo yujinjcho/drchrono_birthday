@@ -13,6 +13,7 @@ from django.template.defaulttags import register
 from django.contrib.auth.decorators import login_required
 
 from . import config
+from .models import Profile
 
 
 def index(request):
@@ -350,13 +351,18 @@ def handle_user(request, access_token):
      '''
 
     user_data = get_user_data(request)
-    user_query = User.objects.filter(username=user_data['id'])
+    #user_query = User.objects.filter(username=user_data['id'])
+    profile_query = Profile.objects.filter(drchrono_id=user_data['id'])
 
-    if not user_query:
-        user = User.objects.create_user(username=str(user_data['id']))
+    if not profile_query:
+        user = User.objects.create_user(username=str(user_data['username']))
         user.save()
+
+        profile = Profile(user=user, drchrono_id=str(user_data['id']))
+        profile.save()
     else:
-        user = user_query[0]
+        current_profile = profile_query.pop()
+        user = current_profile.user
 
     login(request, user)
 
