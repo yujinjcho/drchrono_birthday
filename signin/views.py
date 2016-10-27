@@ -5,7 +5,6 @@ from datetime import datetime
 from urllib import urlencode
 import urlparse
 
-from django.urls import reverse
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
